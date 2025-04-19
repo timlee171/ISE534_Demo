@@ -8,9 +8,8 @@ import {
   Tooltip,
   Progress,
 } from "@material-tailwind/react";
-import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
-import { authorsTableData, projectsTableData } from "@/data";
+
 
 
 export function Notifications() {

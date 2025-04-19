@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import { IconButton, Alert } from "@material-tailwind/react";
@@ -6,7 +6,7 @@ import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { Sidenav, DashboardNavbar } from "@/widgets/layout";
 import routes from "@/routes";
 import { useMaterialTailwindController, setOpenConfigurator } from "@/context";
-import { connectToStream, closeStream } from "@/utils/stream";
+import { StreamContext } from "@/context/StreamContext";
 
 // AddNotification function to store in localStorage
 const addNotification = (notification) => {
@@ -28,7 +28,7 @@ const addNotification = (notification) => {
 export function Dashboard() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavType } = controller;
-
+  const { onUnauthorized } = useContext(StreamContext);
   const [unauthorizedAlerts, setUnauthorizedAlerts] = useState([]);
 
   const handleUnauthorizedAlert = useCallback((unauthorized) => {
@@ -64,34 +64,28 @@ export function Dashboard() {
   }, []);
 
   useEffect(() => {
-    const stream = connectToStream(
-      (data) => console.log("Stream update:", data), // onUpdate
-      handleUnauthorizedAlert, // onUnauthorized
-      (error) => console.error("Stream error:", error) // onError
-    );
-    return () => {
-      closeStream();
-    };
-  }, [handleUnauthorizedAlert]);
+    console.log("Dashboard subscribing to stream events");
+    onUnauthorized(handleUnauthorizedAlert);
+  }, [onUnauthorized, handleUnauthorizedAlert]);
 
   useEffect(() => {
-    const openAlerts = unauthorizedAlerts.filter(alert => alert.open);
+    const openAlerts = unauthorizedAlerts.filter((alert) => alert.open);
     if (openAlerts.length === 0) return;
 
-    const timeouts = openAlerts.map(alert => {
+    const timeouts = openAlerts.map((alert) => {
       return setTimeout(() => {
-        setUnauthorizedAlerts(prev => 
-          prev.map(a => a.id === alert.id ? { ...a, open: false } : a)
+        setUnauthorizedAlerts((prev) =>
+          prev.map((a) => (a.id === alert.id ? { ...a, open: false } : a))
         );
-        
+
         setTimeout(() => {
-          setUnauthorizedAlerts(prev => prev.filter(a => a.id !== alert.id));
+          setUnauthorizedAlerts((prev) => prev.filter((a) => a.id !== alert.id));
         }, 300);
       }, 5000);
     });
 
     return () => {
-      timeouts.forEach(timeout => clearTimeout(timeout));
+      timeouts.forEach((timeout) => clearTimeout(timeout));
     };
   }, [unauthorizedAlerts]);
 
@@ -132,17 +126,6 @@ export function Dashboard() {
             </Alert>
           ))}
         </div>
-
-        <IconButton
-          size="lg"
-          color="white"
-          className="fixed bottom-8 right-8 z-40 rounded-full shadow-blue-gray-900/10"
-          ripple={false}
-          onClick={() => setOpenConfigurator(dispatch, true)}
-        >
-          <Cog6ToothIcon className="h-5 w-5" />
-        </IconButton>
-        
         <Routes>
           {routes.map(
             ({ layout, pages }) =>
@@ -152,6 +135,15 @@ export function Dashboard() {
               ))
           )}
         </Routes>
+        <IconButton
+          size="lg"
+          color="white"
+          className="fixed bottom-8 right-8 z-40 rounded-full shadow-blue-gray-900/10"
+          ripple={false}
+          onClick={() => setOpenConfigurator(dispatch, true)}
+        >
+          <Cog6ToothIcon className="h-5 w-5" />
+        </IconButton>
       </div>
     </div>
   );

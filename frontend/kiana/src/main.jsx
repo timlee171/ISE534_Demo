@@ -15,16 +15,20 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@material-tailwind/react";
 import { MaterialTailwindControllerProvider } from "@/context";
+import { StreamProvider } from "@/context/StreamContext";
 import "../public/css/tailwind.css";
 
 
-
 ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
     <BrowserRouter>
       <ThemeProvider>
-        <MaterialTailwindControllerProvider>
-          <App />
-        </MaterialTailwindControllerProvider>
+        <StreamProvider>
+          <MaterialTailwindControllerProvider>
+            <App />
+          </MaterialTailwindControllerProvider>
+        </StreamProvider>
       </ThemeProvider>
     </BrowserRouter>
+  </React.StrictMode>
 );

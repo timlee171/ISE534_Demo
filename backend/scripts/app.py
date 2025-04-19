@@ -1,4 +1,4 @@
-from flask import Flask, Response, stream_with_context
+from flask import Flask, Response, stream_with_context, jsonify
 from flask_cors import CORS
 import json
 import time
@@ -25,13 +25,14 @@ def stream():
                 time.sleep(sleep_time)
 
                 mac = row.get("ClientMacAddr")
-                location = (row.get("lat"), row.get("lng"))
+                location = [row.get("lat"), row.get("lng")]
                 timestamp = row.get("localtime")
 
                 payload = {
                 "mac_address": mac,
                 "location": location,
-                "timestamp": timestamp
+                "timestamp": timestamp,
+                "authorized": mac in AUTHORIZED_MACS
                 }
                 print(payload)
                 if mac not in AUTHORIZED_MACS:
@@ -41,6 +42,21 @@ def stream():
                     yield f"event: update\ndata: {json.dumps(payload)}\n\n"
 
     return Response(stream_with_context(event_stream()), mimetype="text/event-stream")
+
+@app.route("/devices", methods=["GET"])
+def get_devices():
+    with open("../data/sample_data.json", "r") as file:
+        data = json.load(file)
+        device_records = [
+            {
+                "mac_address": row.get("ClientMacAddr"),
+                "location": [row.get("lat"), row.get("lng")],
+                "timestamp": row.get("localtime"),
+                "authorized": row.get("ClientMacAddr") in AUTHORIZED_MACS
+            }
+            for row in data
+        ]
+    return jsonify(device_records)
 
 if __name__ == "__main__":
     app.run(debug=True, threaded=True, port=5000)

@@ -9,18 +9,18 @@ export const statisticsCardsData = [
   {
     color: "gray",
     icon: BanknotesIcon,
-    title: "Number of Employee",
+    title: "# of Employee",
     value: "20",
     footer: {
       color: "text-green-500",
-      value: "+55%",
+      value: "+2%",
       label: "than last week",
     },
   },
   {
     color: "gray",
     icon: UsersIcon,
-    title: "Number of visitors",
+    title: "# of Visitors",
     value: "5",
     footer: {
       color: "text-green-500",
@@ -31,8 +31,8 @@ export const statisticsCardsData = [
   {
     color: "gray",
     icon: UserPlusIcon,
-    title: "New Clients",
-    value: "3,462",
+    title: "Errors Count",
+    value: "2",
     footer: {
       color: "text-red-500",
       value: "-2%",

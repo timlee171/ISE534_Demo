@@ -1,33 +1,97 @@
-import React from "react";
+import React, { useState, useCallback, useEffect, useContext } from "react";
 import {
   Typography,
-  Card,
-  CardHeader,
-  CardBody,
-  IconButton,
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
-  Avatar,
-  Tooltip,
-  Progress,
 } from "@material-tailwind/react";
-import {
-  EllipsisVerticalIcon,
-  ArrowUpIcon,
-} from "@heroicons/react/24/outline";
 import { StatisticsCard } from "@/widgets/cards";
 import { StatisticsChart } from "@/widgets/charts";
 import {
   statisticsCardsData,
-  statisticsChartsData,
-  projectsTableData,
-  ordersOverviewData,
+  statisticsChartsData
 } from "@/data";
 import { CheckCircleIcon, ClockIcon } from "@heroicons/react/24/solid";
+import MapView from "@/components/MapView";
+import { StreamContext } from "@/context/StreamContext";
+
+
 
 export function Home() {
+  const { onUpdate, onUnauthorized } = useContext(StreamContext);
+  const [devices, setDevices] = useState([]);
+
+  const handleUpdate = useCallback((data) => {
+    const mac = data.mac_address;
+    const location = data.location;
+    const timestamp = data.timestamp;
+    const authorized = data.authorized;
+
+    setDevices((prevDevices) => {
+      const existingDevice = prevDevices.find((d) => d.mac_address === mac);
+      if (existingDevice) {
+        return prevDevices.map((d) =>
+          d.mac_address === mac
+            ? { ...d, location, timestamp, authorized }
+            : d
+        );
+      }
+      return [
+        ...prevDevices,
+        { mac_address: mac, location, timestamp, authorized },
+      ];
+    });
+  }, []);
+
+  const handleUnauthorized = useCallback((unauthorized) => {
+    const mac = unauthorized.mac_address;
+    const location = unauthorized.location;
+    const timestamp = unauthorized.timestamp;
+    const authorized = unauthorized.authorized;
+
+    setDevices((prevDevices) => {
+      const existingDevice = prevDevices.find((d) => d.mac_address === mac);
+      if (existingDevice) {
+        return prevDevices.map((d) =>
+          d.mac_address === mac
+            ? { ...d, location, timestamp, authorized }
+            : d
+        );
+      }
+      return [
+        ...prevDevices,
+        { mac_address: mac, location, timestamp, authorized },
+      ];
+    });
+  }, []);
+
+  // Fetch historical device records
+  useEffect(() => {
+    fetch("http://localhost:5000/devices")
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch devices");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setDevices(data);
+        console.log("Fetched historical devices:", data);
+      })
+      .catch((error) => {
+        console.error("Error fetching devices:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    console.log("Home subscribing to stream events");
+    onUpdate(handleUpdate);
+    onUnauthorized(handleUnauthorized);
+  }, [onUpdate, onUnauthorized, handleUpdate, handleUnauthorized]);
+
+  useEffect(() => {
+    console.log("Current devices:", devices);
+  }, [devices]);
+
+
+
   return (
     <div className="mt-12">
       <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
@@ -65,8 +129,17 @@ export function Home() {
           />
         ))}
       </div>
+      <div className="mb-4">
+        <Typography variant="h5" className="mb-2">
+          Device Locations
+        </Typography>
+        <div className="w-full h-[500px]">
+          <MapView devices={devices} />
+        </div>
+      </div>
     </div>
   );
 }
+Home.displayName = "/src/pages/dashboard/home.jsx";
 
 export default Home;

@@ -3,14 +3,9 @@ import {
   CardHeader,
   CardBody,
   Typography,
-  Avatar,
-  Chip,
-  Tooltip,
-  Progress,
+  Chip
 } from "@material-tailwind/react";
-import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
-import { authorsTableData, projectsTableData } from "@/data";
 
 
 export function Machine() {
@@ -30,14 +25,14 @@ export function Machine() {
       <Card>
         <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
           <Typography variant="h6" color="white">
-            Notification Table
+            Machine Log Table
           </Typography>
         </CardHeader>
         <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
           <table className="w-full min-w-[640px] table-auto">
             <thead>
               <tr>
-                {["Time", "MAC Address", "Message", "Location"].map((el) => (
+                {["Time", "Machine", "Status", "Location"].map((el) => (
                   <th
                     key={el}
                     className="border-b border-blue-gray-50 py-3 px-5 text-left"

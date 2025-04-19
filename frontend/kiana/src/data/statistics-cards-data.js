@@ -1,14 +1,14 @@
 import {
-  BanknotesIcon,
-  UserPlusIcon,
   UsersIcon,
-  ChartBarIcon,
+  UserCircleIcon,
+  WrenchScrewdriverIcon,
+  ExclamationCircleIcon
 } from "@heroicons/react/24/solid";
 
 export const statisticsCardsData = [
   {
     color: "gray",
-    icon: BanknotesIcon,
+    icon: UsersIcon,
     title: "# of Employee",
     value: "20",
     footer: {
@@ -19,7 +19,7 @@ export const statisticsCardsData = [
   },
   {
     color: "gray",
-    icon: UsersIcon,
+    icon: UserCircleIcon,
     title: "# of Visitors",
     value: "5",
     footer: {
@@ -30,7 +30,7 @@ export const statisticsCardsData = [
   },
   {
     color: "gray",
-    icon: UserPlusIcon,
+    icon: ExclamationCircleIcon,
     title: "Errors Count",
     value: "2",
     footer: {
@@ -41,9 +41,9 @@ export const statisticsCardsData = [
   },
   {
     color: "gray",
-    icon: ChartBarIcon,
-    title: "Sales",
-    value: "$103,430",
+    icon: WrenchScrewdriverIcon,
+    title: "Unsolved Tasks",
+    value: "3",
     footer: {
       color: "text-green-500",
       value: "+5%",

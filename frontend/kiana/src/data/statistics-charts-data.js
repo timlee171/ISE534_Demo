@@ -1,6 +1,6 @@
 import { chartsConfig } from "@/configs";
 
-const websiteViewsChart = {
+const EmployeeChart = {
   type: "bar",
   height: 220,
   series: [
@@ -25,13 +25,13 @@ const websiteViewsChart = {
   },
 };
 
-const dailySalesChart = {
+const ErrorChart = {
   type: "line",
   height: 220,
   series: [
     {
-      name: "Sales",
-      data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
+      name: "Error counts",
+      data: [2, 3, 2, 3, 2, 2, 0],
     },
   ],
   options: {
@@ -46,15 +46,7 @@ const dailySalesChart = {
     xaxis: {
       ...chartsConfig.xaxis,
       categories: [
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
+"M", "T", "W", "T", "F", "S", "S"
       ],
     },
   },
@@ -65,8 +57,8 @@ const completedTaskChart = {
   height: 220,
   series: [
     {
-      name: "Sales",
-      data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
+      name: "Unsolved tasks",
+      data: [8, 5, 3, 10, 12, 9, 6],
     },
   ],
   options: {
@@ -81,25 +73,17 @@ const completedTaskChart = {
     xaxis: {
       ...chartsConfig.xaxis,
       categories: [
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
+"M", "T", "W", "T", "F", "S", "S"
       ],
     },
   },
 };
-const completedTasksChart = {
+const imcompletedTasksChart = {
   ...completedTaskChart,
   series: [
     {
-      name: "Tasks",
-      data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+      name: "Unsolved Tasks",
+      data: [8, 5, 3, 10, 12, 9, 6],
     },
   ],
 };
@@ -107,24 +91,24 @@ const completedTasksChart = {
 export const statisticsChartsData = [
   {
     color: "white",
-    title: "Website View",
-    description: "Last Campaign Performance",
-    footer: "campaign sent 2 days ago",
-    chart: websiteViewsChart,
+    title: "Employee",
+    description: "Last week",
+    footer: "updated 1 min ago",
+    chart: EmployeeChart,
   },
   {
     color: "white",
-    title: "Daily Sales",
+    title: "Error Chart",
     description: "15% increase in today sales",
     footer: "updated 4 min ago",
-    chart: dailySalesChart,
+    chart: ErrorChart,
   },
   {
     color: "white",
-    title: "Completed Tasks",
-    description: "Last Campaign Performance",
+    title: "Imcompleted Tasks",
+    description: "Last week",
     footer: "just updated",
-    chart: completedTasksChart,
+    chart: imcompletedTasksChart,
   },
 ];
 

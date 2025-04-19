@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback, useContext } from "react";
 import { Routes, Route } from "react-router-dom";
-import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import { IconButton, Alert } from "@material-tailwind/react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { Sidenav, DashboardNavbar } from "@/widgets/layout";
@@ -36,9 +35,7 @@ export function Dashboard() {
     const location = unauthorized.location;
     
     setUnauthorizedAlerts((prevAlerts) => {
-      const isDuplicate = prevAlerts.some(alert => 
-        alert.mac === mac && alert.open
-      );
+      const isDuplicate = prevAlerts.some((alert) => alert.mac === mac && alert.open);
       if (isDuplicate) {
         return prevAlerts;
       }
@@ -64,9 +61,9 @@ export function Dashboard() {
   }, []);
 
   useEffect(() => {
-    console.log("Dashboard subscribing to stream events");
+    console.log("Dashboard subscribing to unauthorized events");
     onUnauthorized(handleUnauthorizedAlert);
-  }, [onUnauthorized, handleUnauthorizedAlert]);
+  }, [onUnauthorized]);
 
   useEffect(() => {
     const openAlerts = unauthorizedAlerts.filter((alert) => alert.open);
@@ -135,15 +132,6 @@ export function Dashboard() {
               ))
           )}
         </Routes>
-        <IconButton
-          size="lg"
-          color="white"
-          className="fixed bottom-8 right-8 z-40 rounded-full shadow-blue-gray-900/10"
-          ripple={false}
-          onClick={() => setOpenConfigurator(dispatch, true)}
-        >
-          <Cog6ToothIcon className="h-5 w-5" />
-        </IconButton>
       </div>
     </div>
   );

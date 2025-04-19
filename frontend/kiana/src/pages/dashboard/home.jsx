@@ -1,84 +1,35 @@
-import React, { useState, useCallback, useEffect, useContext } from "react";
-import {
-  Typography,
-} from "@material-tailwind/react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
+import { Typography } from "@material-tailwind/react";
 import { StatisticsCard } from "@/widgets/cards";
 import { StatisticsChart } from "@/widgets/charts";
-import {
-  statisticsCardsData,
-  statisticsChartsData
-} from "@/data";
-import { CheckCircleIcon, ClockIcon } from "@heroicons/react/24/solid";
+import { statisticsCardsData, statisticsChartsData } from "@/data";
+import { ClockIcon } from "@heroicons/react/24/solid";
 import MapView from "@/components/MapView";
 import { StreamContext } from "@/context/StreamContext";
 
-
-
 export function Home() {
   const { onUpdate, onUnauthorized } = useContext(StreamContext);
-  const [devices, setDevices] = useState([]);
+  const [devices, setDevices] = useState({}); // Store devices as { mac_address: latest_record }
 
-  const handleUpdate = useCallback((data) => {
+  const updateDevice = useCallback((data) => {
     const mac = data.mac_address;
     const location = data.location;
     const timestamp = data.timestamp;
     const authorized = data.authorized;
 
-    setDevices((prevDevices) => {
-      const existingDevice = prevDevices.find((d) => d.mac_address === mac);
-      if (existingDevice) {
-        return prevDevices.map((d) =>
-          d.mac_address === mac
-            ? { ...d, location, timestamp, authorized }
-            : d
-        );
-      }
-      return [
-        ...prevDevices,
-        { mac_address: mac, location, timestamp, authorized },
-      ];
-    });
+    setDevices((prevDevices) => ({
+      ...prevDevices,
+      [mac]: { mac_address: mac, location, timestamp, authorized },
+    }));
   }, []);
+
+  const handleUpdate = useCallback((data) => {
+    updateDevice(data);
+  }, [updateDevice]);
 
   const handleUnauthorized = useCallback((unauthorized) => {
-    const mac = unauthorized.mac_address;
-    const location = unauthorized.location;
-    const timestamp = unauthorized.timestamp;
-    const authorized = unauthorized.authorized;
-
-    setDevices((prevDevices) => {
-      const existingDevice = prevDevices.find((d) => d.mac_address === mac);
-      if (existingDevice) {
-        return prevDevices.map((d) =>
-          d.mac_address === mac
-            ? { ...d, location, timestamp, authorized }
-            : d
-        );
-      }
-      return [
-        ...prevDevices,
-        { mac_address: mac, location, timestamp, authorized },
-      ];
-    });
-  }, []);
-
-  // Fetch historical device records
-  useEffect(() => {
-    fetch("http://localhost:5000/devices")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to fetch devices");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setDevices(data);
-        console.log("Fetched historical devices:", data);
-      })
-      .catch((error) => {
-        console.error("Error fetching devices:", error);
-      });
-  }, []);
+    updateDevice(unauthorized);
+  }, [updateDevice]);
 
   useEffect(() => {
     console.log("Home subscribing to stream events");
@@ -87,10 +38,13 @@ export function Home() {
   }, [onUpdate, onUnauthorized, handleUpdate, handleUnauthorized]);
 
   useEffect(() => {
-    console.log("Current devices:", devices);
+    console.log("Current devices:", Object.values(devices));
   }, [devices]);
 
-
+  // Log the devices prop passed to MapView
+  useEffect(() => {
+    console.log("Devices passed to MapView:", Object.values(devices));
+  }, [devices]);
 
   return (
     <div className="mt-12">
@@ -106,7 +60,7 @@ export function Home() {
             footer={
               <Typography className="font-normal text-blue-gray-600">
                 <strong className={footer.color}>{footer.value}</strong>
-                &nbsp;{footer.label}
+                 {footer.label}
               </Typography>
             }
           />
@@ -123,7 +77,7 @@ export function Home() {
                 className="flex items-center font-normal text-blue-gray-600"
               >
                 <ClockIcon strokeWidth={2} className="h-4 w-4 text-blue-gray-400" />
-                &nbsp;{props.footer}
+                 {props.footer}
               </Typography>
             }
           />
@@ -134,12 +88,13 @@ export function Home() {
           Device Locations
         </Typography>
         <div className="w-full h-[500px]">
-          <MapView devices={devices} />
+          <MapView devices={Object.values(devices)} />
         </div>
       </div>
     </div>
   );
 }
+
 Home.displayName = "/src/pages/dashboard/home.jsx";
 
 export default Home;

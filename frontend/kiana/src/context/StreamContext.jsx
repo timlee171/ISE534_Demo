@@ -1,54 +1,52 @@
-import React, { createContext, useEffect, useCallback } from "react";
-import { connectToStream, closeStream } from "@/utils/stream";
+import React, { createContext, useEffect, useRef } from "react";
 
 export const StreamContext = createContext();
 
 export const StreamProvider = ({ children }) => {
-  const listeners = {
-    update: [],
-    unauthorized: [],
+  const updateCallbacks = useRef([]);
+  const unauthorizedCallbacks = useRef([]);
+
+  const onUpdate = (callback) => {
+    updateCallbacks.current.push(callback);
   };
 
-  const addUpdateListener = (listener) => {
-    listeners.update.push(listener);
+  const onUnauthorized = (callback) => {
+    unauthorizedCallbacks.current.push(callback);
   };
-
-  const addUnauthorizedListener = (listener) => {
-    listeners.unauthorized.push(listener);
-  };
-
-  const handleUpdate = useCallback((data) => {
-    console.log("Stream update:", data);
-    listeners.update.forEach((listener) => listener(data));
-  }, []);
-
-  const handleUnauthorized = useCallback((data) => {
-    console.warn("Stream unauthorized:", data);
-    listeners.unauthorized.forEach((listener) => listener(data));
-  }, []);
-
-  const handleError = useCallback((error) => {
-    console.error("Stream error:", error);
-  }, []);
 
   useEffect(() => {
-    console.log("StreamProvider initializing EventSource.");
-    const stream = connectToStream(handleUpdate, handleUnauthorized, handleError);
+    const eventSource = new EventSource("http://localhost:5000/stream");
+
+    eventSource.onmessage = (event) => {
+      console.log("Received event:", event.data);
+    };
+
+    eventSource.addEventListener("update", (event) => {
+      const data = JSON.parse(event.data);
+      console.log("Stream update:", data);
+      updateCallbacks.current.forEach((callback) => callback(data));
+    });
+
+    eventSource.addEventListener("unauthorized", (event) => {
+      const data = JSON.parse(event.data);
+      console.log("Stream unauthorized:", data);
+      unauthorizedCallbacks.current.forEach((callback) => callback(data));
+    });
+
+    eventSource.onerror = (error) => {
+      console.error("EventSource error:", error);
+    };
 
     return () => {
-      console.log("StreamProvider cleaning up EventSource.");
-      closeStream();
+      eventSource.close();
     };
-  }, [handleUpdate, handleUnauthorized, handleError]);
+  }, []);
 
   return (
-    <StreamContext.Provider
-      value={{
-        onUpdate: addUpdateListener,
-        onUnauthorized: addUnauthorizedListener,
-      }}
-    >
+    <StreamContext.Provider value={{ onUpdate, onUnauthorized }}>
       {children}
     </StreamContext.Provider>
   );
 };
+
+StreamProvider.displayName = "/src/context/StreamContext.jsx";

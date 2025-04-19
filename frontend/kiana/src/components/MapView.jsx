@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
-import "leaflet.markercluster/dist/leaflet.markercluster";
 import "leaflet/dist/leaflet.css";
 
-// Fix for default Leaflet marker icons
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
@@ -12,24 +10,43 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
-// Custom icons for authorized and unauthorized devices
-const authorizedIcon = new L.Icon({
-  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  shadowSize: [41, 41],
+const unauthorizedIcon = L.divIcon({
+  className: "custom-dot-marker",
+  html: `
+    <div style="
+      background-color: #FF0000;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 1px solid #ffffff;
+      box-shadow: 0 0 2px rgba(0,0,0,0.5);
+    "></div>
+  `,
+  iconSize: [8, 8],
+  iconAnchor: [4, 4],
+  popupAnchor: [0, -4],
 });
 
-const unauthorizedIcon = new L.Icon({
-  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  shadowSize: [41, 41],
+
+const authorizedIcon = L.divIcon({
+  className: "custom-dot-marker-authorized",
+  html: `
+    <div style="
+      background-color: #007bff;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 1px solid #ffffff;
+      box-shadow: 0 0 2px rgba(0,0,0,0.5);
+    "></div>
+  `,
+  iconSize: [8, 8],
+  iconAnchor: [4, 4],
+  popupAnchor: [0, -4],
 });
+
+
+
 
 // Component to update map bounds when markers change
 function MapBounds({ markers }) {
@@ -43,21 +60,31 @@ function MapBounds({ markers }) {
   return null;
 }
 
+
 const MapView = ({ devices }) => {
-  // Default building location (replace with your building's coordinates)
-  const buildingLocation = [51.4608217517, -0.9323052216]; 
+  const buildingLocation = [51.4605697396, -0.9323233544]; 
   const [markers, setMarkers] = useState([]);
+
+  // Log received devices prop for debugging
+  console.log("MapView received devices:", devices, "Type:", typeof devices, "IsArray:", Array.isArray(devices));
+
 
   // Update markers when devices change
   useEffect(() => {
+    if (!Array.isArray(devices)) {
+      console.error("MapView: devices is not an array:", devices);
+      setMarkers([]);
+      return;
+    }
     const newMarkers = devices.map((device) => ({
       mac: device.mac_address,
-      lat: device.location[0], // Latitude
-      lng: device.location[1], // Longitude
+      lat: device.location[0],
+      lng: device.location[1],
       timestamp: device.timestamp,
       authorized: device.authorized,
     }));
     setMarkers(newMarkers);
+    console.log("Map markers updated:", newMarkers);
   }, [devices]);
 
   return (

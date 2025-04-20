@@ -2,14 +2,32 @@ import React, { useEffect, useState, useCallback, useContext } from "react";
 import { Typography } from "@material-tailwind/react";
 import { StatisticsCard } from "@/widgets/cards";
 import { StatisticsChart } from "@/widgets/charts";
-import { statisticsCardsData, statisticsChartsData } from "@/data";
+import { statisticsChartsData } from "@/data";
+import {
+  UsersIcon,
+  UserCircleIcon,
+  WrenchScrewdriverIcon,
+  ExclamationCircleIcon
+} from "@heroicons/react/24/solid";
 import { ClockIcon } from "@heroicons/react/24/solid";
 import MapView from "@/components/MapView";
 import { StreamContext } from "@/context/StreamContext";
 
 export function Home() {
   const { onUpdate, onUnauthorized } = useContext(StreamContext);
-  const [devices, setDevices] = useState({}); // Store devices as { mac_address: latest_record }
+  const [devices, setDevices] = useState(() => {
+    if (!sessionStorage.getItem("hasClearedDeviceHistory")) {
+      localStorage.removeItem("deviceHistory");
+      sessionStorage.setItem("hasClearedDeviceHistory", "true");
+    }
+    const stored = JSON.parse(localStorage.getItem("deviceHistory")) || {};
+    return stored;
+  });
+
+  // Update localStorage when devices change
+  useEffect(() => {
+    localStorage.setItem("deviceHistory", JSON.stringify(devices));
+  }, [devices]);
 
   const updateDevice = useCallback((data) => {
     const mac = data.mac_address;
@@ -45,6 +63,58 @@ export function Home() {
   useEffect(() => {
     console.log("Devices passed to MapView:", Object.values(devices));
   }, [devices]);
+
+  // Compute employee and visitor counts
+  const employeeCount = Object.values(devices).filter((device) => device.authorized).length;
+  const visitorCount = Object.values(devices).filter((device) => !device.authorized).length;
+
+  // Dynamic statistics cards data
+  const statisticsCardsData = [
+    {
+      color: "gray",
+      icon: UsersIcon,
+      title: "# of Employee",
+      value: employeeCount.toString(),
+      footer: {
+        color: "text-green-500",
+        value: "+2%",
+        label: "than last week",
+      },
+    },
+    {
+      color: "gray",
+      icon: UserCircleIcon,
+      title: "# of Visitors",
+      value: visitorCount.toString(),
+      footer: {
+        color: "text-green-500",
+        value: "+3%",
+        label: "than last month",
+      },
+    },
+    {
+      color: "gray",
+      icon: ExclamationCircleIcon,
+      title: "Errors Count",
+      value: "2",
+      footer: {
+        color: "text-red-500",
+        value: "-2%",
+        label: "than yesterday",
+      },
+    },
+    {
+      color: "gray",
+      icon: WrenchScrewdriverIcon,
+      title: "Unsolved Tasks",
+      value: "3",
+      footer: {
+        color: "text-green-500",
+        value: "+5%",
+        label: "than yesterday",
+      },
+    },
+  ];
 
   return (
     <div className="mt-12">

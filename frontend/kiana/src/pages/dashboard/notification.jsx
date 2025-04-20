@@ -20,8 +20,23 @@ export function Notifications() {
       localStorage.removeItem("notificationHistory");
       sessionStorage.setItem("hasClearedHistory", "true");
     }
-    const stored = JSON.parse(localStorage.getItem("notificationHistory")) || [];
-    setNotificationHistory(stored.reverse()); // newest first
+    const updateNotifications = () => {
+      const stored = JSON.parse(localStorage.getItem("notificationHistory")) || [];
+      setNotificationHistory(stored.reverse()); // Newest first
+    };
+    // Initial load
+    updateNotifications();
+
+    // Listen for storage changes
+    window.addEventListener("storage", updateNotifications);
+
+    // Poll localStorage for updates
+    const interval = setInterval(updateNotifications, 1000);
+
+    return () => {
+      window.removeEventListener("storage", updateNotifications);
+      clearInterval(interval);
+    };
   }, []);
 
   return (
@@ -105,5 +120,6 @@ export function Notifications() {
     </div>
   );
 }
+Notifications.displayName = "/src/pages/dashboard/notifications.jsx";
 
 export default Notifications;

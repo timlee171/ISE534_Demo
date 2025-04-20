@@ -20,15 +20,13 @@ import "../public/css/tailwind.css";
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <ThemeProvider>
-        <StreamProvider>
-          <MaterialTailwindControllerProvider>
-            <App />
-          </MaterialTailwindControllerProvider>
-        </StreamProvider>
-      </ThemeProvider>
-    </BrowserRouter>
-  </React.StrictMode>
+  <BrowserRouter>
+    <ThemeProvider>
+      <StreamProvider>
+        <MaterialTailwindControllerProvider>
+          <App />
+        </MaterialTailwindControllerProvider>
+      </StreamProvider>
+    </ThemeProvider>
+  </BrowserRouter>
 );

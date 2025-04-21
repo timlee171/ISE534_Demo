@@ -24,20 +24,20 @@ export function Home() {
     return stored;
   });
 
-  // Update localStorage when devices change
   useEffect(() => {
     localStorage.setItem("deviceHistory", JSON.stringify(devices));
   }, [devices]);
 
+
   const updateDevice = useCallback((data) => {
     const mac = data.mac_address;
     const location = data.location;
-    const timestamp = data.timestamp;
     const authorized = data.authorized;
+    const source = data.source;
 
     setDevices((prevDevices) => ({
       ...prevDevices,
-      [mac]: { mac_address: mac, location, timestamp, authorized },
+      [mac]: { mac_address: mac, location, authorized, source },
     }));
   }, []);
 
@@ -65,15 +65,16 @@ export function Home() {
   }, [devices]);
 
   // Compute employee and visitor counts
-  const employeeCount = Object.values(devices).filter((device) => device.authorized).length;
-  const visitorCount = Object.values(devices).filter((device) => !device.authorized).length;
+  const employeeCount = Object.values(devices).filter((device) => device.authorized && device.source === "employee").length;
+  const visitorCount = Object.values(devices).filter((device) => device.authorized && device.source === "visitor").length;
+
 
   // Dynamic statistics cards data
   const statisticsCardsData = [
     {
       color: "gray",
       icon: UsersIcon,
-      title: "# of Employee",
+      title: "Employee",
       value: employeeCount.toString(),
       footer: {
         color: "text-green-500",
@@ -84,7 +85,7 @@ export function Home() {
     {
       color: "gray",
       icon: UserCircleIcon,
-      title: "# of Visitors",
+      title: "Visitors",
       value: visitorCount.toString(),
       footer: {
         color: "text-green-500",
@@ -95,7 +96,7 @@ export function Home() {
     {
       color: "gray",
       icon: ExclamationCircleIcon,
-      title: "Errors Count",
+      title: "Errors",
       value: "2",
       footer: {
         color: "text-red-500",

@@ -3,10 +3,9 @@ import {
   UserCircleIcon,
   TableCellsIcon,
   InformationCircleIcon,
-  ServerStackIcon,
-  RectangleStackIcon,
+  ShieldCheckIcon
 } from "@heroicons/react/24/solid";
-import { Home, Machine, Notifications } from "@/pages/dashboard";
+import { Home, Machine, Notifications, TempAuth } from "@/pages/dashboard";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -33,6 +32,12 @@ export const routes = [
         name: "notifications",
         path: "/notifications",
         element: <Notifications />,
+      },
+      {
+        icon: <ShieldCheckIcon {...icon} />,
+        name: "visitor",
+        path: "/temp-auth",
+        element: <TempAuth />,
       },
     ],
   },

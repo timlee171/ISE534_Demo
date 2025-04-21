@@ -10,26 +10,8 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
-const unauthorizedIcon = L.divIcon({
-  className: "custom-dot-marker",
-  html: `
-    <div style="
-      background-color: #FF0000;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      border: 1px solid #ffffff;
-      box-shadow: 0 0 2px rgba(0,0,0,0.5);
-    "></div>
-  `,
-  iconSize: [8, 8],
-  iconAnchor: [4, 4],
-  popupAnchor: [0, -4],
-});
-
-
-const authorizedIcon = L.divIcon({
-  className: "custom-dot-marker-authorized",
+const employeeIcon = L.divIcon({
+  className: "custom-dot-marker-employee",
   html: `
     <div style="
       background-color: #007bff;
@@ -45,6 +27,39 @@ const authorizedIcon = L.divIcon({
   popupAnchor: [0, -4],
 });
 
+const visitorIcon = L.divIcon({
+  className: "custom-dot-marker-visitor",
+  html: `
+    <div style="
+      background-color: #ffc107;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 1px solid #ffffff;
+      box-shadow: 0 0 2px rgba(0,0,0,0.5);
+    "></div>
+  `,
+  iconSize: [8, 8],
+  iconAnchor: [4, 4],
+  popupAnchor: [0, -4],
+});
+
+const unauthorizedIcon = L.divIcon({
+  className: "custom-dot-marker-unauthorized",
+  html: `
+    <div style="
+      background-color: #FF0000;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 1px solid #ffffff;
+      box-shadow: 0 0 2px rgba(0,0,0,0.5);
+    "></div>
+  `,
+  iconSize: [8, 8],
+  iconAnchor: [4, 4],
+  popupAnchor: [0, -4],
+});
 
 
 
@@ -80,8 +95,8 @@ const MapView = ({ devices }) => {
       mac: device.mac_address,
       lat: device.location[0],
       lng: device.location[1],
-      timestamp: device.timestamp,
       authorized: device.authorized,
+      source: device.source || null,
     }));
     setMarkers(newMarkers);
     console.log("Map markers updated:", newMarkers);
@@ -101,16 +116,22 @@ const MapView = ({ devices }) => {
       <MapBounds markers={markers} />
       {markers.map((marker) => (
         <Marker
-          key={marker.mac + marker.timestamp}
+          key={marker.mac}
           position={[marker.lat, marker.lng]}
-          icon={marker.authorized ? authorizedIcon : unauthorizedIcon}
+          icon={
+            marker.authorized && marker.source === "employee"
+              ? employeeIcon
+              : marker.authorized && marker.source === "visitor"
+              ? visitorIcon
+              : unauthorizedIcon
+          }
         >
           <Popup>
             <div>
               <strong>MAC:</strong> {marker.mac}<br />
               <strong>Location:</strong> ({marker.lat.toFixed(6)}, {marker.lng.toFixed(6)})<br />
-              <strong>Timestamp:</strong> {new Date(marker.timestamp).toLocaleString()}<br />
-              <strong>Status:</strong> {marker.authorized ? "Authorized" : "Unauthorized"}
+              <strong>Status:</strong> {marker.authorized ? "Authorized" : "Unauthorized"}<br />
+              <strong>Source:</strong> {marker.source || "None"}
             </div>
           </Popup>
         </Marker>

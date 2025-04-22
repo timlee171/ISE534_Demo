@@ -3,34 +3,45 @@ from flask_cors import CORS
 import json
 import time
 import datetime 
-import datetime
 import joblib
 import numpy as np
+import pandas as pd
 
 
 app = Flask(__name__)
 CORS(app)
 
-# # Load the pre-trained ML model for RUL prediction
-# try:
-#     rul_model = joblib.load("../model/xgboost_model.pkl")
-# except FileNotFoundError:
-#     print("Error: RUL model file not found. Please provide a trained model.")
-#     rul_model = None
+# Load the pre-trained ML model for RUL prediction
+try:
+    rul_model = joblib.load("../model/xgboost_model.pkl")
+except FileNotFoundError:
+    print("Error: RUL model file not found. Please provide a trained model.")
+    rul_model = None
 
 RUL_THRESHOLD = 24
+
+BREAKDOWN_THRESHOLD = 5
 
 AUTHORIZED_MACS = {'84:a1:34:e6:68:67', '1c:5c:f2:e0:d1:cf', '9c:da:3e:7e:f7:d4',
        '88:66:a5:1e:b0:b2', '38:00:25:6c:3f:09', '98:10:e8:06:85:6a',
        '7c:b2:7d:87:5c:cb', '88:66:a5:55:76:c6', '88:66:a5:14:63:be',
-       '5c:5f:67:8b:e1:47', '9c:da:3e:7f:8e:24', 'a4:c3:f0:a5:f1:2c'}
+       '5c:5f:67:8b:e1:47', '9c:da:3e:7f:8e:24', 'a4:c3:f0:a5:f1:2c', 'cc:44:63:15:fa:5e', '90:61:ae:25:a1:de', '7c:b2:7d:87:58:93'}
 TEMP_AUTHORIZED_MACS = set()
 
-MACHINE_INFO = [{"machine_id": 1, "mac_address": "00:0b:82:d0:ff:35", "lat": "51.460366", "lng": "-0.932544"},
-                {"machine_id": 2, "mac_address": "00:80:92:df:7b:97", "lat": "51.460355", "lng": "-0.932523"},
-                {"machine_id": 3, "mac_address": "28:3a:4d:31:e2:e5", "lat": "51.460569", "lng": "-0.932353"},
-                {"machine_id": 4, "mac_address": "28:3a:4d:31:a1:8d", "lat": "51.460684", "lng": "-0.932335"},
-                {"machine_id": 5, "mac_address": "64:6e:69:d9:fc:8b", "lat": "51.460385", "lng": "-0.932597"}]
+MACHINE_INFO = [{"machine_id": 49, "mac_address": "28:3a:4d:31:a1:8d", "lat": "51.460684", "lng": "-0.932335", "floor_name": "Ground Floor", "name":"Lithography Systems", "company": "SamSung"},
+                {"machine_id": 45, "mac_address": "00:80:92:df:7b:97", "lat": "51.460355", "lng": "-0.932523", "floor_name": "Ground Floor", "name":"Clean Room Equipment", "company": "SamSung"},
+                {"machine_id": 41, "mac_address": "9c:b6:d0:bc:4b:c1", "lat": "51.460499", "lng": "-0.933075", "floor_name": "Ground Floor", "name":"Lithography System-1", "company": "Nividia"},
+                {"machine_id": 37, "mac_address": "fc:45:96:12:d1:4b", "lat": "51.460904", "lng": "-0.932329", "floor_name": "Ground Floor", "name":"Clean Room Equipment", "company": "Apple"},
+                {"machine_id": 64, "mac_address": "00:0b:82:d0:ff:35", "lat": "51.460366", "lng": "-0.932544", "floor_name": "1st Floor", "name":"Lithography System-2", "company": "SamSung"}]
+
+
+
+features_col = ['time_in_cycles', 'voltmean_24h', 'rotatemean_24h', 'pressuremean_24h',
+ 'vibrationmean_24h', 'voltsd_24h', 'rotatesd_24h', 'pressuresd_24h',
+ 'vibrationsd_24h', 'voltmean_5d', 'rotatemean_5d', 'pressuremean_5d',
+ 'vibrationmean_5d', 'voltsd_5d', 'rotatesd_5d', 'pressuresd_5d',
+ 'vibrationsd_5d', 'error1', 'error2', 'error3', 'error4', 'error5', 'comp1',
+ 'comp2', 'comp3', 'comp4', 'age', 'model_encoded', 'DI']
 
 
 @app.route("/stream/rtls")
@@ -75,64 +86,79 @@ def stream():
 
     return Response(stream_with_context(event_stream()), mimetype="text/event-stream")
 
-@app.route("/temp-auth", methods=["POST"])
-def add_temp_auth():
-    data = request.get_json()
-    mac = data.get("mac_address")
-    if not mac:
-        return jsonify({"error": "MAC address required"}), 400
-    TEMP_AUTHORIZED_MACS.add(mac.lower())
-    return jsonify({"message": f"MAC {mac} added to temporary authorization list"}), 200
-
-@app.route("/temp-auth/<mac>", methods=["DELETE"])
-def remove_temp_auth(mac):
-    mac = mac.lower()
-    if mac in TEMP_AUTHORIZED_MACS:
-        TEMP_AUTHORIZED_MACS.remove(mac)
-        return jsonify({"message": f"MAC {mac} removed from temporary authorization list"}), 200
-    return jsonify({"error": f"MAC {mac} not found in temporary authorization list"}), 404
-
-@app.route("/temp-auth", methods=["GET"])
-def get_temp_auth():
-    return jsonify(list(TEMP_AUTHORIZED_MACS))
-
 @app.route("/stream/machine")
 def stream_machine():
+    def predict_rul(data, model, features_col):
+        input_array = np.array([[data[col] for col in features_col]])
+        predicted_rul = model.predict(input_array)[0]
+        return predicted_rul
+    
+    def infer_failure_reason(row):
+        errors = ['error1', 'error2', 'error3', 'error4', 'error5']
+        active_errors = [err for err in errors if err in row and row[err] > 0]
+        if active_errors:
+            return f"Error codes: {', '.join(active_errors)}"
+
+        comps = ['comp1', 'comp2', 'comp3', 'comp4']
+        active_comps = [comp for comp in comps if comp in row and row[comp] > 0]
+        if active_comps:
+            return f"Maintenance on: {', '.join([c.replace('comp', 'component ') for c in active_comps])}"
+
+        if 'vibrationmean_24h' in row and row['vibrationmean_24h'] > 45:
+            return "High vibration"
+        if 'voltmean_24h' in row and row['voltmean_24h'] > 180:
+            return "High voltage"
+        if 'pressuremean_24h' in row and row['pressuremean_24h'] > 110:
+            return "High pressure"
+        if 'rotatemean_24h' in row and row['rotatemean_24h'] > 500:
+            return "High rotation speed"
+        return "Unknown or general wear"
+
     def event_stream():
-        with open("../data/machine_data.json", "r") as file:
+        with open("../data/filtered_sample_rul.json", "r") as file:
             data = json.load(file)
             total_records = len(data)
-            duration = 180  # Stream duration in seconds
+            duration = 180
             sleep_time = duration / total_records
 
             for row in data:
                 time.sleep(sleep_time)
+                machine_id = row.get("machineID")
+                # Find matching machine in MACHINE_INFO
+                machine = next((m for m in MACHINE_INFO if m["machine_id"] == machine_id), None)
+                if not machine:
+                    print(f"Warning: No machine found for id {id}")
+                    continue
 
-                mac = row.get("mac_address")
-                sensor_data = {
-                    "temperature": row.get("temperature", 0),
-                    "pressure": row.get("pressure", 0),
-                    "vibration": row.get("vibration", 0)
-                }
-
-                # Predict RUL
                 rul = None
+                status = "Good"
                 maintenance_alert = False
-                if rul_model and all(key in sensor_data for key in ["temperature", "pressure", "vibration"]):
+                reason_to_failure = infer_failure_reason(row)
+                if rul_model and all(col in row for col in features_col):
                     try:
-                        features = np.array([[sensor_data["temperature"], sensor_data["pressure"], sensor_data["vibration"]]])
-                        rul = rul_model.predict(features)[0]
-                        if rul < RUL_THRESHOLD:
-                            maintenance_alertKwargs = True
+                        rul = predict_rul(row, rul_model, features_col)
+                        if rul <= BREAKDOWN_THRESHOLD:
+                            status = "Breakdown"
                             maintenance_alert = True
+                        elif rul < RUL_THRESHOLD:
+                            status = "Warning"
+                            maintenance_alert = True
+                        else:
+                            status = "Good"
                     except Exception as e:
-                        print(f"Error predicting RUL: {e}")
+                        print(f"Error predicting RUL for {machine_id}: {e}")
+                        status = "Unknown"
 
-                # Machine log payload
+                # Machine status payload
                 payload = {
-                    "mac_address": mac,
-                    "sensor_data": sensor_data,
-                    "rul": float(rul) if rul is not None else None
+                    "machine_id": machine_id,
+                    "name": machine["name"],
+                    "company": machine["company"],
+                    "floor_name": machine["floor_name"],
+                    "location": [float(machine["lat"]), float(machine["lng"])],
+                    "rul": float(rul) if rul is not None else None,
+                    "status": status,
+                    "timestamp": datetime.datetime.utcnow().isoformat()
                 }
 
                 print(f"Machine log: {payload}")
@@ -141,12 +167,16 @@ def stream_machine():
                 # Maintenance alert
                 if maintenance_alert:
                     maintenance_payload = {
-                        "mac_address": mac,
-                        "rul": float(rul),
-                        "message": f"Maintenance required: RUL {rul:.2f} hours",
-                        "timestamp": datetime.utcnow().isoformat()
+                        "type": "maintenance",
+                        "name": machine["name"],
+                        "company": machine["company"],
+                        "rul": float(rul) if rul is not None else None,
+                        "status": status,
+                        "message": f"Maintenance required: {status} (RUL {rul:.2f} hours)",
+                        "predicted_failure_time": (datetime.datetime.utcnow() + datetime.timedelta(hours=float(rul))).isoformat(),
+                        "reason_to_failure": reason_to_failure
                     }
-                    print(f"Maintenance alert: {maintenance_payload}")
+                    print(f"Maintenance notification: {maintenance_payload}")
                     yield f"event: maintenance\ndata: {json.dumps(maintenance_payload)}\n\n"
 
     return Response(stream_with_context(event_stream()), mimetype="text/event-stream")

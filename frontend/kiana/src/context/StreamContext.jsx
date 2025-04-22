@@ -1,10 +1,42 @@
-import React, { createContext, useEffect, useRef } from "react";
+import React, { createContext, useEffect, useState, useRef } from "react";
 
 export const StreamContext = createContext();
 
 export const StreamProvider = ({ children }) => {
   const updateCallbacks = useRef([]);
   const unauthorizedCallbacks = useRef([]);
+
+  const [notificationHistory, setNotificationHistory] = useState([]);
+
+  useEffect(() => {
+    if (!sessionStorage.getItem("hasClearedHistory")) {
+      localStorage.removeItem("notificationHistory");
+      sessionStorage.setItem("hasClearedHistory", "true");
+      setNotificationHistory([]);
+    } else {
+      const stored = JSON.parse(localStorage.getItem("notificationHistory")) || [];
+      setNotificationHistory(stored);
+    }
+  }, []);
+
+  // Add notification and sync with localStorage
+  const addNotification = (notification) => {
+    setNotificationHistory((prev) => {
+      const isDuplicate = prev.some(
+        (n) =>
+          n.timestamp === notification.timestamp &&
+          n.mac === notification.mac &&
+          n.message === notification.message &&
+          n.location === notification.location &&
+          n.type === notification.type
+      );
+      if (isDuplicate) return prev;
+
+      const updated = [...prev, notification];
+      localStorage.setItem("notificationHistory", JSON.stringify(updated));
+      return updated;
+    });
+  };
 
   const onUpdate = (callback) => {
     updateCallbacks.current.push(callback);
@@ -15,7 +47,7 @@ export const StreamProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const eventSource = new EventSource("http://localhost:5000/stream");
+    const eventSource = new EventSource("http://localhost:5000/stream/rtls");
 
     eventSource.onmessage = (event) => {
       console.log("Received event:", event.data);
@@ -43,7 +75,14 @@ export const StreamProvider = ({ children }) => {
   }, []);
 
   return (
-    <StreamContext.Provider value={{ onUpdate, onUnauthorized }}>
+    <StreamContext.Provider
+      value={{
+        onUpdate,
+        onUnauthorized,
+        notificationHistory,
+        addNotification,
+      }}
+    >
       {children}
     </StreamContext.Provider>
   );

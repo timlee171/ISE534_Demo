@@ -7,27 +7,11 @@ import routes from "@/routes";
 import { useMaterialTailwindController, setOpenConfigurator } from "@/context";
 import { StreamContext } from "@/context/StreamContext";
 
-// AddNotification function to store in localStorage
-const addNotification = (notification) => {
-  const existing = JSON.parse(localStorage.getItem("notificationHistory")) || [];
-  const isDuplicate = existing.some(
-    (n) =>
-      n.timestamp === notification.timestamp &&
-      n.mac === notification.mac &&
-      n.message === notification.message &&
-      n.location === notification.location &&
-      n.type === notification.type
-  );
-  if (!isDuplicate) {
-    const updated = [...existing, notification];
-    localStorage.setItem("notificationHistory", JSON.stringify(updated));
-  }
-};
 
 export function Dashboard() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavType } = controller;
-  const { onUnauthorized } = useContext(StreamContext);
+  const { onUnauthorized, addNotification } = useContext(StreamContext);
   const [unauthorizedAlerts, setUnauthorizedAlerts] = useState([]);
 
   const handleUnauthorizedAlert = useCallback((unauthorized) => {
@@ -63,7 +47,7 @@ export function Dashboard() {
   useEffect(() => {
     console.log("Dashboard subscribing to unauthorized events");
     onUnauthorized(handleUnauthorizedAlert);
-  }, [onUnauthorized]);
+  }, [onUnauthorized, handleUnauthorizedAlert]);
 
   useEffect(() => {
     const openAlerts = unauthorizedAlerts.filter((alert) => alert.open);

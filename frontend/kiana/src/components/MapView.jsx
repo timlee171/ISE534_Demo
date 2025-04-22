@@ -61,6 +61,23 @@ const unauthorizedIcon = L.divIcon({
   popupAnchor: [0, -4],
 });
 
+const machineIcon = L.divIcon({
+  className: "custom-dot-marker-machine",
+  html: `
+    <div style="
+      background-color: #00FF00;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 1px solid #ffffff;
+      box-shadow: 0 0 2px rgba(0,0,0,0.5);
+    "></div>
+  `,
+  iconSize: [8, 8],
+  iconAnchor: [4, 4],
+  popupAnchor: [0, -4],
+});
+
 
 
 // Component to update map bounds when markers change
@@ -79,10 +96,29 @@ function MapBounds({ markers }) {
 const MapView = ({ devices }) => {
   const buildingLocation = [51.4605697396, -0.9323233544]; 
   const [markers, setMarkers] = useState([]);
+  const [machines, setMachines] = useState([]);
 
   // Log received devices prop for debugging
   console.log("MapView received devices:", devices, "Type:", typeof devices, "IsArray:", Array.isArray(devices));
 
+  // Fetch machine data
+  useEffect(() => {
+    const fetchMachines = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/machines");
+        const data = await response.json();
+        if (Array.isArray(data)) {
+          setMachines(data);
+          console.log("Machines fetched:", JSON.stringify(data, null, 2));
+        } else {
+          console.error("Invalid machine data:", data);
+        }
+      } catch (error) {
+        console.error("Error fetching machines:", error);
+      }
+    };
+    fetchMachines();
+  }, []);
 
   // Update markers when devices change
   useEffect(() => {
@@ -102,6 +138,12 @@ const MapView = ({ devices }) => {
     console.log("Map markers updated:", newMarkers);
   }, [devices]);
 
+  // Combine device and machine markers for map bounds
+  const allMarkers = [
+    ...markers.map((m) => ({ lat: m.lat, lng: m.lng })),
+    ...machines.map((m) => ({ lat: m.lat, lng: m.lng })),
+  ];
+
   return (
     <MapContainer
       center={buildingLocation}
@@ -113,7 +155,8 @@ const MapView = ({ devices }) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-      <MapBounds markers={markers} />
+      <MapBounds markers={allMarkers} />
+      {/* RTLS device markers */}
       {markers.map((marker) => (
         <Marker
           key={marker.mac}
@@ -130,8 +173,26 @@ const MapView = ({ devices }) => {
             <div>
               <strong>MAC:</strong> {marker.mac}<br />
               <strong>Location:</strong> ({marker.lat.toFixed(6)}, {marker.lng.toFixed(6)})<br />
+              <strong>Level:</strong> Ground Floor<br />
               <strong>Status:</strong> {marker.authorized ? "Authorized" : "Unauthorized"}<br />
               <strong>Source:</strong> {marker.source || "None"}
+            </div>
+          </Popup>
+        </Marker>
+      ))}
+      {/* Machine markers */}
+      {machines.map((machine) => (
+        <Marker
+          key={machine.mac_address}
+          position={[machine.lat, machine.lng]}
+          icon={machineIcon}
+        >
+          <Popup>
+            <div>
+              <strong>Machine ID:</strong> {machine.machine_id}<br />
+              <strong>MAC:</strong> {machine.mac_address}<br />
+              <strong>Location:</strong> ({machine.lat}, {machine.lng})<br />
+              <strong>Type:</strong> Machine
             </div>
           </Popup>
         </Marker>

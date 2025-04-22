@@ -3,41 +3,14 @@ import {
   CardHeader,
   CardBody,
   Typography,
-  Avatar,
   Chip,
-  Tooltip,
-  Progress,
 } from "@material-tailwind/react";
-import React, { useEffect, useState } from "react";
-
+import React, { useContext } from "react";
+import { StreamContext } from "@/context/StreamContext";
 
 
 export function Notifications() {
-  const [notificationHistory, setNotificationHistory] = useState([]);
-
-  useEffect(() => {
-    if (!sessionStorage.getItem("hasClearedHistory")) {
-      localStorage.removeItem("notificationHistory");
-      sessionStorage.setItem("hasClearedHistory", "true");
-    }
-    const updateNotifications = () => {
-      const stored = JSON.parse(localStorage.getItem("notificationHistory")) || [];
-      setNotificationHistory(stored.reverse()); // Newest first
-    };
-    // Initial load
-    updateNotifications();
-
-    // Listen for storage changes
-    window.addEventListener("storage", updateNotifications);
-
-    // Poll localStorage for updates
-    const interval = setInterval(updateNotifications, 1000);
-
-    return () => {
-      window.removeEventListener("storage", updateNotifications);
-      clearInterval(interval);
-    };
-  }, []);
+  const { notificationHistory } = useContext(StreamContext);
 
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
@@ -67,58 +40,62 @@ export function Notifications() {
               </tr>
             </thead>
             <tbody>
-              {notificationHistory.map((notif, index) => {
-                  const className = `py-3 px-5 ${
-                    index === notificationHistory.length - 1
-                      ? ""
-                      : "border-b border-blue-gray-50"
-                  }`;
+              {notificationHistory
+                  .slice()
+                  .reverse()
+                  .map((notif, index) => {
+                    const className = `py-3 px-5 ${
+                      index === notificationHistory.length - 1
+                        ? ""
+                        : "border-b border-blue-gray-50"
+                    }`;
 
-                  return (
-                    <tr key={notif.id || index}>
-                      <td className={className}>
-                        <div className="flex items-center gap-4">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-semibold"
-                          >
-                            {new Date(notif.timestamp).toLocaleString()}
+                    return (
+                      <tr key={notif.timestamp + notif.mac}>
+                        <td className={className}>
+                          <div className="flex items-center gap-4">
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-semibold"
+                            >
+                              {new Date(notif.timestamp).toLocaleString()}
+                            </Typography>
+                          </div>
+                        </td>
+                        <td className={className}>
+                          <Typography className="text-xs font-semibold text-blue-gray-600">
+                            {notif.mac}
                           </Typography>
-                        </div>
-                      </td>
-                      <td className={className}>
-                        <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {notif.mac}
-                        </Typography>
-                      </td>
-                      <td className={className}>
-                        <Chip
-                          variant="gradient"
-                          color={notif.type === "security"
-                            ? "red"
-                            : notif.type === "maintenance"
-                            ? "yellow"
-                            : "gray"}
-                          value={notif.message}
-                          className="py-0.5 px-2 text-[11px] font-medium w-fit"
-                        />
-                      </td>
-                      <td className={className}>
-                        <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {notif.location || "Unknown"}
-                        </Typography>
-                      </td>
-                    </tr>
-                  );
-                }
-              )}
-            </tbody>
-          </table>
-        </CardBody>
-      </Card>
-    </div>
-  );
+                        </td>
+                        <td className={className}>
+                          <Chip
+                            variant="gradient"
+                            color={
+                              notif.type === "security"
+                                ? "red"
+                                : notif.type === "maintenance"
+                                ? "yellow"
+                                : "gray"
+                            }
+                            value={notif.message}
+                            className="py-0.5 px-2 text-[11px] font-medium w-fit"
+                          />
+                        </td>
+                        <td className={className}>
+                          <Typography className="text-xs font-semibold text-blue-gray-600">
+                            {notif.location || "Unknown"}
+                          </Typography>
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+          </CardBody>
+        </Card>
+      </div>
+    );
 }
 Notifications.displayName = "/src/pages/dashboard/notifications.jsx";
 

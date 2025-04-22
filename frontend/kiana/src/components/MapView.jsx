@@ -192,7 +192,8 @@ const MapView = ({ devices }) => {
               <strong>Machine ID:</strong> {machine.machine_id}<br />
               <strong>MAC:</strong> {machine.mac_address}<br />
               <strong>Location:</strong> ({machine.lat}, {machine.lng})<br />
-              <strong>Type:</strong> Machine
+              <strong>Level:</strong> Ground Floor<br />
+              <strong>Status:</strong> Good<br />
             </div>
           </Popup>
         </Marker>

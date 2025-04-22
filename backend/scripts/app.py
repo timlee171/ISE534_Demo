@@ -3,6 +3,9 @@ from flask_cors import CORS
 import json
 import time
 import datetime 
+import datetime
+import joblib
+import numpy as np
 
 
 app = Flask(__name__)
@@ -10,7 +13,7 @@ CORS(app)
 
 # # Load the pre-trained ML model for RUL prediction
 # try:
-#     rul_model = joblib.load("../models/rul_model.pkl")
+#     rul_model = joblib.load("../model/xgboost_model.pkl")
 # except FileNotFoundError:
 #     print("Error: RUL model file not found. Please provide a trained model.")
 #     rul_model = None
@@ -23,11 +26,11 @@ AUTHORIZED_MACS = {'84:a1:34:e6:68:67', '1c:5c:f2:e0:d1:cf', '9c:da:3e:7e:f7:d4'
        '5c:5f:67:8b:e1:47', '9c:da:3e:7f:8e:24', 'a4:c3:f0:a5:f1:2c'}
 TEMP_AUTHORIZED_MACS = set()
 
-MACHINE_INFO = [{"machine_id": 1, "mac_address": "00:0b:82:d0:ff:35", "lat": "51.4603668011321", "lng": "-0.932544301464585"},
-                {"machine_id": 2, "mac_address": "00:80:92:df:7b:97", "lat": "51.4603558442931", "lng": "-0.932523457155923"},
-                {"machine_id": 3, "mac_address": "28:3a:4d:31:e2:e5", "lat": "51.4605691396644", "lng": "-0.932353195942995"},
-                {"machine_id": 4, "mac_address": "28:3a:4d:31:a1:8d", "lat": "51.4606842233795", "lng": "-0.932335489033781"},
-                {"machine_id": 5, "mac_address": "64:6e:69:d9:fc:8b", "lat": "51.4603852218533", "lng": "-0.932597763643519"}]
+MACHINE_INFO = [{"machine_id": 1, "mac_address": "00:0b:82:d0:ff:35", "lat": "51.460366", "lng": "-0.932544"},
+                {"machine_id": 2, "mac_address": "00:80:92:df:7b:97", "lat": "51.460355", "lng": "-0.932523"},
+                {"machine_id": 3, "mac_address": "28:3a:4d:31:e2:e5", "lat": "51.460569", "lng": "-0.932353"},
+                {"machine_id": 4, "mac_address": "28:3a:4d:31:a1:8d", "lat": "51.460684", "lng": "-0.932335"},
+                {"machine_id": 5, "mac_address": "64:6e:69:d9:fc:8b", "lat": "51.460385", "lng": "-0.932597"}]
 
 
 @app.route("/stream/rtls")

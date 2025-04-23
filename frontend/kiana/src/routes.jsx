@@ -5,7 +5,7 @@ import {
   InformationCircleIcon,
   ShieldCheckIcon
 } from "@heroicons/react/24/solid";
-import { Home, Machine, Notifications } from "@/pages/dashboard";
+import { Home, Machine, Notifications, Employees } from "@/pages/dashboard";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -32,6 +32,12 @@ export const routes = [
         name: "notifications",
         path: "/notifications",
         element: <Notifications />,
+      },
+      {
+        icon: <InformationCircleIcon {...icon} />,
+        name: "employee",
+        path: "/employee",
+        element: <Employees />,
       },
     ],
   },

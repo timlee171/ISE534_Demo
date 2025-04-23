@@ -1,152 +1,222 @@
-import React, { createContext, useEffect, useState, useRef } from "react";
+import React, { createContext, useState, useEffect, useRef, useMemo } from "react";
 
 export const StreamContext = createContext();
 
 export const StreamProvider = ({ children }) => {
-  const updateCallbacks = useRef([]);
-  const unauthorizedCallbacks = useRef([]);
-  const machineCallbacks = useRef([]);
-  const maintenanceCallbacks = useRef([]);
-  const [notificationHistory, setNotificationHistory] = useState([]);
   const [machines, setMachines] = useState([]);
+  const [employees, setEmployees] = useState([]); // New state for static employee data
   const [machineStatuses, setMachineStatuses] = useState({});
+  const [rtlsData, setRtlsData] = useState({});
+  const [notificationHistory, setNotificationHistory] = useState([]);
+  const [unauthorizedDevices, setUnauthorizedDevices] = useState([]);
+  const [zoneViolations, setZoneViolations] = useState([]);
+  const machineSourceRef = useRef(null);
+  const rtlsSourceRef = useRef(null);
 
-  useEffect(() => {
-    if (!sessionStorage.getItem("hasClearedHistory")) {
-      localStorage.removeItem("notificationHistory");
-      sessionStorage.setItem("hasClearedHistory", "true");
-      setNotificationHistory([]);
-    } else {
-      const stored = JSON.parse(localStorage.getItem("notificationHistory")) || [];
-      setNotificationHistory(stored);
-    }
-  }, []);
+  console.log("StreamProvider initialized:", {
+    unauthorizedDevices,
+    zoneViolations,
+    rtlsData,
+    machines,
+    employees
+  });
 
-  // Fetch machine data
+  // Fetch static machine data
   useEffect(() => {
-    const fetchMachines = async () => {
+    const fetchMachines = async (attempt = 1, maxAttempts = 3, delay = 5000) => {
       try {
+        console.log(`Fetching machines, attempt ${attempt}`);
         const response = await fetch("http://localhost:5000/machines");
-        const data = await response.json();
-        if (Array.isArray(data)) {
-          setMachines(data);
-          console.log("StreamContext machines fetched:", JSON.stringify(data, null, 2));
-        } else {
-          console.error("Invalid machine data:", data);
+        if (!response.ok) {
+          throw new Error(`HTTP error ${response.status}`);
         }
+        const data = await response.json();
+        setMachines(data);
+        console.log("Machines fetched:", data);
       } catch (error) {
-        console.error("Error fetching machines:", error);
+        console.error(`Error fetching machines (attempt ${attempt}):`, error.message);
+        if (attempt < maxAttempts) {
+          console.log(`Retrying in ${delay}ms...`);
+          setTimeout(() => fetchMachines(attempt + 1, maxAttempts, delay), delay);
+        } else {
+          console.error("Max attempts reached for fetching machines");
+        }
       }
     };
+
     fetchMachines();
   }, []);
 
-  // Add notification and sync with localStorage
-  const addNotification = (notification) => {
-    setNotificationHistory((prev) => {
-      const isDuplicate = prev.some(
-        (n) =>
-          n.timestamp === notification.timestamp &&
-          n.mac === notification.mac &&
-          n.message === notification.message &&
-          n.location === notification.location &&
-          n.type === notification.type
-      );
-      if (isDuplicate) return prev;
-
-      const updated = [...prev, notification];
-      localStorage.setItem("notificationHistory", JSON.stringify(updated));
-      return updated;
-    });
-  };
-
-  const onUpdate = (callback) => {
-    updateCallbacks.current.push(callback);
-  };
-
-  const onUnauthorized = (callback) => {
-    unauthorizedCallbacks.current.push(callback);
-  };
-
-  const onMachine = (callback) => {
-    machineCallbacks.current.push(callback);
-  };
-
-  const onMaintenance = (callback) => {
-    maintenanceCallbacks.current.push(callback);
-  };
-
+  // Fetch static employee data
   useEffect(() => {
-    const eventSource = new EventSource("http://localhost:5000/stream/rtls");
-
-    eventSource.onmessage = (event) => {
-      console.log("Received event:", event.data);
+    const fetchEmployees = async (attempt = 1, maxAttempts = 3, delay = 5000) => {
+      try {
+        console.log(`Fetching employees, attempt ${attempt}`);
+        const response = await fetch("http://localhost:5000/devices");
+        if (!response.ok) {
+          throw new Error(`HTTP error ${response.status}`);
+        }
+        const data = await response.json();
+        setEmployees(data);
+        console.log("Employees fetched:", data);
+      } catch (error) {
+        console.error(`Error fetching employees (attempt ${attempt}):`, error.message);
+        if (attempt < maxAttempts) {
+          console.log(`Retrying in ${delay}ms...`);
+          setTimeout(() => fetchEmployees(attempt + 1, maxAttempts, delay), delay);
+        } else {
+          console.error("Max attempts reached for fetching employees");
+        }
+      }
     };
 
-    eventSource.addEventListener("update", (event) => {
-      const data = JSON.parse(event.data);
-      console.log("Stream update:", data);
-      updateCallbacks.current.forEach((callback) => callback(data));
-    });
+    fetchEmployees();
+  }, []);
 
-    eventSource.addEventListener("unauthorized", (event) => {
-      const data = JSON.parse(event.data);
-      console.log("Stream unauthorized:", data);
-      unauthorizedCallbacks.current.forEach((callback) => callback(data));
-    });
+  // Stream machine maintenance data
+  useEffect(() => {
+    const connectMachineStream = (attempt = 1, maxAttempts = 5) => {
+      console.log(`Connecting to machine stream, attempt ${attempt}`);
+      machineSourceRef.current = new EventSource("http://localhost:5000/stream/machine");
 
-    eventSource.onerror = (error) => {
-      console.error("EventSource error:", error);
+      machineSourceRef.current.onopen = () => {
+        console.log("Machine EventSource connected");
+      };
+
+      machineSourceRef.current.addEventListener("machine", (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          console.log("Machine status log:", {
+            machine_id: data.machine_id,
+            mac_address: data.mac_address,
+            rul: data.rul,
+            status: data.status
+          });
+          setMachineStatuses((prev) => ({
+            ...prev,
+            [data.machine_id]: data
+          }));
+        } catch (error) {
+          console.error("Error parsing machine data:", error);
+        }
+      });
+
+      machineSourceRef.current.addEventListener("maintenance", (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          console.log("Maintenance notification:", data);
+          setNotificationHistory((prev) => [data, ...prev]);
+        } catch (error) {
+          console.error("Error parsing maintenance data:", error);
+        }
+      });
+
+      machineSourceRef.current.onerror = (error) => {
+        console.error("Machine EventSource error:", error);
+        machineSourceRef.current.close();
+        if (attempt < maxAttempts) {
+          console.log(`Reconnecting machine stream in 5s, attempt ${attempt + 1}`);
+          setTimeout(() => connectMachineStream(attempt + 1, maxAttempts), 5000);
+        } else {
+          console.error("Max reconnection attempts reached for machine stream");
+        }
+      };
     };
 
-    const machineSource = new EventSource("http://localhost:5000/stream/machine");
-
-    machineSource.onmessage = (event) => {
-      console.log("Machine event:", event.data);
-    };
-
-    machineSource.addEventListener("machine", (event) => {
-      const data = JSON.parse(event.data);
-      console.log("Machine log:", JSON.stringify(data, null, 2));
-      setMachineStatuses((prev) => ({
-        ...prev,
-        [data.machine_id]: data
-      }));
-      machineCallbacks.current.forEach((callback) => callback(data));
-    });
-
-    machineSource.addEventListener("maintenance", (event) => {
-      const data = JSON.parse(event.data);
-      console.log("Maintenance notification:", JSON.stringify(data, null, 2));
-      addNotification(data);
-      maintenanceCallbacks.current.forEach((callback) => callback(data));
-    });
-
-    machineSource.onerror = (error) => {
-      console.error("Machine EventSource error:", error);
-    };
+    connectMachineStream();
 
     return () => {
-      eventSource.close();
+      if (machineSourceRef.current) {
+        machineSourceRef.current.close();
+        console.log("Machine EventSource closed");
+      }
     };
   }, []);
 
+  // Stream RTLS data (employees only)
+  useEffect(() => {
+    const connectRtlsStream = (attempt = 1, maxAttempts = 5) => {
+      console.log(`Connecting to RTLS stream, attempt ${attempt}`);
+      rtlsSourceRef.current = new EventSource("http://localhost:5000/stream/rtls");
+
+      rtlsSourceRef.current.onopen = () => {
+        console.log("RTLS EventSource connected");
+      };
+
+      rtlsSourceRef.current.addEventListener("update", (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          console.log("RTLS log:", data);
+          setRtlsData((prev) => ({
+            ...prev,
+            [data.mac_address]: data
+          }));
+        } catch (error) {
+          console.error("Error parsing RTLS data:", error);
+        }
+      });
+
+      rtlsSourceRef.current.addEventListener("zone_violation", (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          console.log("Zone violation:", data);
+          setZoneViolations((prev) => [data, ...prev]);
+        } catch (error) {
+          console.error("Error parsing zone violation data:", error);
+        }
+      });
+
+      rtlsSourceRef.current.onerror = (error) => {
+        console.error("RTLS EventSource error:", error);
+        rtlsSourceRef.current.close();
+        if (attempt < maxAttempts) {
+          console.log(`Reconnecting RTLS stream in 5s, attempt ${attempt + 1}`);
+          setTimeout(() => connectRtlsStream(attempt + 1, maxAttempts), 5000);
+        } else {
+          console.error("Max reconnection attempts reached for RTLS stream");
+        }
+      };
+    };
+
+    connectRtlsStream();
+
+    return () => {
+      if (rtlsSourceRef.current) {
+        rtlsSourceRef.current.close();
+        console.log("RTLS EventSource closed");
+      }
+    };
+  }, []);
+
+  // Stabilize context value
+  const contextValue = useMemo(
+    () => ({
+      machines,
+      employees, // Added
+      machineStatuses,
+      rtlsData,
+      notificationHistory,
+      unauthorizedDevices,
+      zoneViolations,
+      setNotificationHistory,
+      setUnauthorizedDevices,
+    }),
+    [
+      machines,
+      employees,
+      machineStatuses,
+      rtlsData,
+      notificationHistory,
+      unauthorizedDevices,
+      zoneViolations,
+      setNotificationHistory,
+      setUnauthorizedDevices,
+    ]
+  );
+
   return (
-    <StreamContext.Provider
-      value={{
-        onUpdate,
-        onUnauthorized,
-        onMachine,
-        onMaintenance,
-        notificationHistory,
-        addNotification,
-        machines,
-        machineStatuses,
-      }}
-    >
+    <StreamContext.Provider value={contextValue}>
       {children}
     </StreamContext.Provider>
   );
 };
-
-StreamProvider.displayName = "/src/context/StreamContext.jsx";

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useContext } from "react";
+import React, { useEffect, useState, useContext, useMemo } from "react";
 import { Typography } from "@material-tailwind/react";
 import { StatisticsCard } from "@/widgets/cards";
 import { StatisticsChart } from "@/widgets/charts";
@@ -7,14 +7,14 @@ import {
   UsersIcon,
   UserCircleIcon,
   WrenchScrewdriverIcon,
-  ExclamationCircleIcon
+  ExclamationCircleIcon,
 } from "@heroicons/react/24/solid";
 import { ClockIcon } from "@heroicons/react/24/solid";
 import MapView from "@/components/MapView";
 import { StreamContext } from "@/context/StreamContext";
 
 export function Home() {
-  const { onUpdate, onUnauthorized } = useContext(StreamContext);
+  const { rtlsData, machines, employees } = useContext(StreamContext);
   const [devices, setDevices] = useState(() => {
     if (!sessionStorage.getItem("hasClearedDeviceHistory")) {
       localStorage.removeItem("deviceHistory");
@@ -28,46 +28,76 @@ export function Home() {
     localStorage.setItem("deviceHistory", JSON.stringify(devices));
   }, [devices]);
 
-
-  const updateDevice = useCallback((data) => {
-    const mac = data.mac_address;
-    const location = data.location;
-    const authorized = data.authorized;
-    const source = data.source;
-
-    setDevices((prevDevices) => ({
-      ...prevDevices,
-      [mac]: { mac_address: mac, location, authorized, source },
-    }));
-  }, []);
-
-  const handleUpdate = useCallback((data) => {
-    updateDevice(data);
-  }, [updateDevice]);
-
-  const handleUnauthorized = useCallback((unauthorized) => {
-    updateDevice(unauthorized);
-  }, [updateDevice]);
-
+  // Update devices from machines and employees
   useEffect(() => {
-    console.log("Home subscribing to stream events");
-    onUpdate(handleUpdate);
-    onUnauthorized(handleUnauthorized);
-  }, [onUpdate, onUnauthorized, handleUpdate, handleUnauthorized]);
+    console.log("rtlsData in Home:", rtlsData);
+    console.log("machines in Home:", machines);
+    console.log("employees in Home:", employees);
 
-  useEffect(() => {
-    console.log("Current devices:", Object.values(devices));
-  }, [devices]);
+    setDevices((prevDevices) => {
+      const newDevices = { ...prevDevices };
 
-  // Log the devices prop passed to MapView
-  useEffect(() => {
-    console.log("Devices passed to MapView:", Object.values(devices));
-  }, [devices]);
+      // Process static machine data
+      machines.forEach((machine) => {
+        newDevices[machine.mac_address] = {
+          mac_address: machine.mac_address,
+          location: [parseFloat(machine.lat), parseFloat(machine.lng)],
+          company: machine.company,
+          role: machine.role,
+          name: machine.name,
+          level: machine.floor_name,
+          authorized: true,
+          source: "machine",
+        };
+      });
+
+      // Process employee data
+      employees.forEach((employee) => {
+        const rtls = rtlsData[employee.mac_address] || {};
+        const location =
+          rtls.location &&
+          Array.isArray(rtls.location) &&
+          rtls.location.length === 2 &&
+          typeof rtls.location[0] === "number" &&
+          typeof rtls.location[1] === "number"
+            ? rtls.location
+            : [51.4606, -0.9325]; // Fallback location
+        if (!rtls.location) {
+          console.warn(`No RTLS location for employee: ${employee.mac_address}`);
+        }
+        newDevices[employee.mac_address] = {
+          mac_address: employee.mac_address,
+          location,
+          company: employee.company,
+          role: employee.role,
+          name: employee.name,
+          level: employee.level,
+          timestamp: rtls.timestamp,
+          authorized: true,
+          source: "employee",
+        };
+      });
+
+      console.log("Devices in Home:", Object.values(newDevices));
+      return newDevices;
+    });
+  }, [rtlsData, machines, employees]);
 
   // Compute employee and visitor counts
-  const employeeCount = Object.values(devices).filter((device) => device.authorized && device.source === "employee").length;
-  const visitorCount = Object.values(devices).filter((device) => device.authorized && device.source === "visitor").length;
-
+  const employeeCount = useMemo(
+    () =>
+      Object.values(devices).filter(
+        (device) => device.authorized && device.source === "employee"
+      ).length,
+    [devices]
+  );
+  const visitorCount = useMemo(
+    () =>
+      Object.values(devices).filter(
+        (device) => device.authorized && device.source === "visitor"
+      ).length,
+    [devices]
+  );
 
   // Dynamic statistics cards data
   const statisticsCardsData = [
@@ -131,7 +161,7 @@ export function Home() {
             footer={
               <Typography className="font-normal text-blue-gray-600">
                 <strong className={footer.color}>{footer.value}</strong>
-                 {footer.label}
+                &nbsp;{footer.label}
               </Typography>
             }
           />
@@ -148,7 +178,7 @@ export function Home() {
                 className="flex items-center font-normal text-blue-gray-600"
               >
                 <ClockIcon strokeWidth={2} className="h-4 w-4 text-blue-gray-400" />
-                 {props.footer}
+                &nbsp;{props.footer}
               </Typography>
             }
           />

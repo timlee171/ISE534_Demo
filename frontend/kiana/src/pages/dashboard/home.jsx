@@ -45,7 +45,7 @@ export function Home() {
           company: machine.company,
           role: machine.role,
           name: machine.name,
-          level: machine.floor_name,
+          floor: machine.floor,
           authorized: true,
           source: "machine",
         };
@@ -71,7 +71,7 @@ export function Home() {
           company: employee.company,
           role: employee.role,
           name: employee.name,
-          level: employee.level,
+          floor: employee.floor,
           timestamp: rtls.timestamp,
           authorized: true,
           source: "employee",

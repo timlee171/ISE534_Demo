@@ -143,26 +143,43 @@ export const StreamProvider = ({ children }) => {
         console.log("RTLS EventSource connected");
       };
 
+      // In your StreamProvider's RTLS update handler:
       rtlsSourceRef.current.addEventListener("update", (event) => {
         try {
           const data = JSON.parse(event.data);
-          console.log("RTLS log:", data);
-          setRtlsData((prev) => ({
-            ...prev,
-            [data.mac_address]: data
-          }));
+          // Only update RTLS data when we have actual location info
+          if (data.location && data.location.length === 2) {
+            setRtlsData((prev) => ({
+              ...prev,
+              [data.mac_address]: data
+            }));
+          }
         } catch (error) {
           console.error("Error parsing RTLS data:", error);
         }
       });
 
+      // Updated RTLS stream handler in StreamProvider
       rtlsSourceRef.current.addEventListener("zone_violation", (event) => {
         try {
-          const data = JSON.parse(event.data);
-          console.log("Zone violation:", data);
-          setZoneViolations((prev) => [data, ...prev]);
+            const rawData = JSON.parse(event.data);
+            
+            // Normalize the data structure
+            const normalizedData = {
+                ...rawData,
+                // Ensure all required fields exist
+                type: rawData.type || "zone_violation",
+                mac_address: rawData.mac_address || rawData.mac,
+                floor: rawData.floor || "ground", // Default to ground if missing
+                timestamp: rawData.timestamp || new Date().toISOString()
+            };
+
+            console.log("Normalized zone violation:", normalizedData);
+            
+            setZoneViolations(prev => [normalizedData, ...prev]);
+            setNotificationHistory(prev => [normalizedData, ...prev]);
         } catch (error) {
-          console.error("Error parsing zone violation data:", error);
+            console.error("Error processing zone violation:", error);
         }
       });
 

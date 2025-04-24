@@ -63,7 +63,7 @@ export function Employees() {
             <table className="w-full min-w-[640px] table-auto">
               <thead>
                 <tr>
-                  {["Name", "Company", "Level", "Role", "MAC"].map((el) => (
+                  {["Name", "Company", "Floor", "Role", "MAC"].map((el) => (
                     <th
                       key={el}
                       className="border-b border-blue-gray-50 py-3 px-5 text-left"
@@ -98,7 +98,7 @@ export function Employees() {
                         </td>
                         <td className={className}>
                         <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {employee.level || "Unknown"}
+                          {employee.floor || "Unknown"}
                         </Typography>
                         </td>
                         <td className={className}>

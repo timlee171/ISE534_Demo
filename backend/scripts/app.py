@@ -37,38 +37,20 @@ AUTHORIZED_MACS = {'84:a1:34:e6:68:67', '1c:5c:f2:e0:d1:cf', '9c:da:3e:7e:f7:d4'
        '5c:5f:67:8b:e1:47', '9c:da:3e:7f:8e:24', 'a4:c3:f0:a5:f1:2c', 'cc:44:63:15:fa:5e', '90:61:ae:25:a1:de', '7c:b2:7d:87:58:93'}
 TEMP_AUTHORIZED_MACS = set()
 
-MACHINE_INFO = [{"machine_id": 49, "mac_address": "28:3a:4d:31:a1:8d", "lat": "51.460684", "lng": "-0.932335", "floor_name": "Ground Floor", "name":"Lithography Systems", "company": "Apple", "role": "machine"},
-                {"machine_id": 45, "mac_address": "00:80:92:df:7b:97", "lat": "51.460355", "lng": "-0.932523", "floor_name": "Ground Floor", "name":"Clean Room Equipment", "company": "Samsung", "role": "machine"},
-                {"machine_id": 41, "mac_address": "9c:b6:d0:bc:4b:c1", "lat": "51.460499", "lng": "-0.933075", "floor_name": "Ground Floor", "name":"Lithography System-1", "company": "Nvidia", "role": "machine"},
-                {"machine_id": 37, "mac_address": "fc:45:96:12:d1:4b", "lat": "51.460904", "lng": "-0.932329", "floor_name": "Ground Floor", "name":"Clean Room Equipment", "company": "Apple", "role": "machine"},
-                {"machine_id": 64, "mac_address": "00:0b:82:d0:ff:35", "lat": "51.460366", "lng": "-0.932544", "floor_name": "1st Floor", "name":"Lithography System-2", "company": "Samsung", "role": "machine"}]
+MACHINE_INFO = [{"machine_id": 49, "mac_address": "28:3a:4d:31:a1:8d", "lat": "51.460684", "lng": "-0.932335", "floor": "Ground Floor", "name":"Lithography Systems", "company": "Apple", "role": "machine"},
+                {"machine_id": 45, "mac_address": "00:80:92:df:7b:97", "lat": "51.460355", "lng": "-0.932523", "floor": "Ground Floor", "name":"Clean Room Equipment", "company": "Samsung", "role": "machine"},
+                {"machine_id": 41, "mac_address": "9c:b6:d0:bc:4b:c1", "lat": "51.460499", "lng": "-0.933075", "floor": "Ground Floor", "name":"Lithography System-1", "company": "Nvidia", "role": "machine"},
+                {"machine_id": 37, "mac_address": "fc:45:96:12:d1:4b", "lat": "51.460904", "lng": "-0.932329", "floor": "Ground Floor", "name":"Clean Room Equipment", "company": "Apple", "role": "machine"},
+                {"machine_id": 64, "mac_address": "00:0b:82:d0:ff:35", "lat": "51.460366", "lng": "-0.932544", "floor": "1st Floor", "name":"Lithography System-2", "company": "Samsung", "role": "machine"}]
 
-employee_table = [{"name": "Tim","company": "Apple", "role": "staff", "level": "ground", "mac_address": "9c:da:3e:7f:8e:24"},
-                   {"name": "Nick","company": "Samsung", "role": "mechanic", "level": "ground", "mac_address": "88:66:a5:14:63:be"},
-                   {"name": "Sanjana","company": "Nvidia", "role": "mechanic", "level": "ground", "mac_address": "84:a1:34:e6:68:67"},
-                   {"name": "Aaryan","company": "Apple", "role": "mechanic", "level": "ground", "mac_address": "38:00:25:6c:3f:09"},
-                   {"name": "Sib","company": "Samsung", "role": "mechanic", "level": "ground", "mac_address": "7c:b2:7d:87:58:93"}]
+employee_table = [{"name": "Tim","company": "Apple", "role": "staff", "floor": "ground", "mac_address": "9c:da:3e:7f:8e:24"},
+                   {"name": "Nick","company": "Samsung", "role": "mechanic", "floor": "ground", "mac_address": "88:66:a5:14:63:be"},
+                   {"name": "Sanjana","company": "Nvidia", "role": "mechanic", "floor": "ground", "mac_address": "84:a1:34:e6:68:67"},
+                   {"name": "Aaryan","company": "Apple", "role": "mechanic", "floor": "ground", "mac_address": "38:00:25:6c:3f:09"},
+                   {"name": "Sib","company": "Samsung", "role": "mechanic", "floor": "ground", "mac_address": "5c:5f:67:8b:e1:47"}]
 
 
-DEVICE_INFO = [
-    {
-        "mac_address": emp["mac_address"],
-        "company": emp["company"],
-        "role": emp["role"],
-        "level": emp["level"],
-        "name": emp["name"]
-    }
-    for emp in employee_table
-] + [
-    {
-        "mac_address": m["mac_address"],
-        "company": m["company"],
-        "role": "machine",
-        "level": m["floor_name"],
-        "name": m["name"],
-    }
-    for m in MACHINE_INFO
-]
+
 
 features_col = ['time_in_cycles', 'voltmean_24h', 'rotatemean_24h', 'pressuremean_24h',
  'vibrationmean_24h', 'voltsd_24h', 'rotatesd_24h', 'pressuresd_24h',
@@ -109,31 +91,31 @@ def stream():
                         logger.warning("No employee info found for mac_address %s", mac)
                         continue
 
+                    # Standard payload for all updates
+                    base_payload = {
+                        "mac_address": mac,
+                        "name": employee["name"],
+                        "company": employee["company"],
+                        "role": employee["role"],
+                        "floor": employee["floor"],
+                        "location": location,
+                        "timestamp": datetime.datetime.utcnow().isoformat()
+                    }
+
                     # Check for zone violations
                     zone_company = get_zone_company(location[0], location[1])
                     if employee["company"] != zone_company:
-                        payload = {
-                            "mac_address": mac,
-                            "name": employee["name"],
-                            "company": employee["company"],
-                            "role": employee["role"],
+                        violation_payload = {
+                            **base_payload,
+                            "type": "zone_violation",
                             "zone_company": zone_company,
-                            "location": location,
-                            "timestamp": datetime.datetime.utcnow().isoformat()
+                            "message": f"{employee['name']} ({employee['company']}) entered restricted zone ({zone_company})"
                         }
-                        logger.info("Zone violation: %s", payload)
-                        yield f"event: zone_violation\ndata: {json.dumps(payload)}\n\n"
-                    payload = {
-                        "mac_address": mac,
-                        "location": location,
-                        "company": employee["company"],
-                        "role": employee["role"],
-                        "level": employee["level"],
-                        "name": employee["name"],
-                        "timestamp": datetime.datetime.utcnow().isoformat()
-                    }
-                    logger.info("RTLS payload: %s", payload)
-                    yield f"event: update\ndata: {json.dumps(payload)}\n\n"
+                        logger.info("Zone violation payload: %s", violation_payload)
+                        yield f"event: zone_violation\ndata: {json.dumps(violation_payload)}\n\n"
+                    
+                    logger.info("RTLS update payload: %s", base_payload)
+                    yield f"event: update\ndata: {json.dumps(base_payload)}\n\n"
         except FileNotFoundError:
             logger.error("sample_data.json not found")
             yield f"event: error\ndata: {{'message': 'sample_data.json not found'}}\n\n"
@@ -177,6 +159,13 @@ def stream_machine():
         if 'rotatemean_24h' in row and row['rotatemean_24h'] > 500:
             return "High rotation speed"
         return "Unknown or general wear"
+    
+    def determine_priority_level(machine_name):
+        if machine_name == "Lithography Systems" or "Lithography System-2":
+            return "High"
+        elif machine_name == "Clean Room Equipment":
+            return "Low"
+        return "Medium"  # Default for other machines
 
     def event_stream():
         try:
@@ -221,7 +210,7 @@ def stream_machine():
                         "mac_address": machine["mac_address"],
                         "name": machine["name"],
                         "company": machine["company"],
-                        "floor_name": machine["floor_name"],
+                        "floor": machine["floor"],
                         "location": [float(machine["lat"]), float(machine["lng"])],
                         "rul": float(rul) if rul is not None else None,
                         "status": status,
@@ -239,10 +228,14 @@ def stream_machine():
                             "company": machine["company"],
                             "rul": float(rul) if rul is not None else None,
                             "status": status,
-                            "floor_name": machine["floor_name"],
+                            "floor": machine["floor"],
+                            "location": [float(machine["lat"]), float(machine["lng"])],
                             "message": f"Maintenance required: {status} (RUL {rul:.2f} hours)",
+                            "timestamp": datetime.datetime.utcnow().isoformat(),
                             "predicted_failure_time": (datetime.datetime.utcnow() + datetime.timedelta(hours=float(rul))).isoformat(),
-                            "reason_to_failure": reason_to_failure
+                            "reason_to_failure": reason_to_failure,
+                            "priority": determine_priority_level(machine["name"]),
+                            "mac_address": machine["mac_address"] 
                         }
                         print(f"Maintenance notification: {maintenance_payload}")
                         yield f"event: maintenance\ndata: {json.dumps(maintenance_payload)}\n\n"
@@ -260,6 +253,7 @@ def stream_machine():
 
 @app.route("/machines", methods=["GET"])
 def get_machines():
+
     return jsonify(MACHINE_INFO)
 
 

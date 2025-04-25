@@ -25,8 +25,14 @@ If MAC address is **authorized**, event type is set to **update**
 - Send Record with **MAC address**, **Longitude**, **Latitude**, and locationtime (not neccessary)
 - **For updating the MAC address location and display on map**
 
-
+## Run Server
+1. Open the folder to scripts
+2. run ```python app.py``` 
 
 # Frontend (React)
+
+## Run UI
+1. ```npm install``` (make sure to install all the packages)
+2. ``` npm start dev```
 
 

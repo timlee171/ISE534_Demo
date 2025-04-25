@@ -92,21 +92,18 @@ export const statisticsChartsData = [
   {
     color: "white",
     title: "Employee",
-    description: "Last week",
     footer: "updated 1 min ago",
     chart: EmployeeChart,
   },
   {
     color: "white",
     title: "Error Chart",
-    description: "15% increase in today sales",
     footer: "updated 4 min ago",
     chart: ErrorChart,
   },
   {
     color: "white",
     title: "Imcompleted Tasks",
-    description: "Last week",
     footer: "just updated",
     chart: imcompletedTasksChart,
   },

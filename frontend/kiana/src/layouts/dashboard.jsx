@@ -168,7 +168,7 @@ export function Dashboard() {
         <DashboardNavbar />
         
         {/* Notification container - middle top */}
-        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md space-y-2">
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-[1000] w-full max-w-md space-y-2">
           {[...unauthorizedAlerts, ...zoneViolationAlerts].map((alert) => (
             <Alert
               key={alert.id}

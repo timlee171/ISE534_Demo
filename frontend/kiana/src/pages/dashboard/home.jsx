@@ -46,7 +46,6 @@ export function Home() {
           role: machine.role,
           name: machine.name,
           floor: machine.floor,
-          authorized: true,
           source: "machine",
         };
       });
@@ -63,7 +62,7 @@ export function Home() {
             ? rtls.location
             : [51.4606, -0.9325]; // Fallback location
         if (!rtls.location) {
-          console.warn(`No RTLS location for employee: ${employee.mac_address}`);
+          // console.warn(`No RTLS location for employee: ${employee.mac_address}`);
         }
         newDevices[employee.mac_address] = {
           mac_address: employee.mac_address,
@@ -73,8 +72,8 @@ export function Home() {
           name: employee.name,
           floor: employee.floor,
           timestamp: rtls.timestamp,
-          authorized: true,
-          source: "employee",
+          type: employee.type, 
+          source: "employee"
         };
       });
 
@@ -87,14 +86,14 @@ export function Home() {
   const employeeCount = useMemo(
     () =>
       Object.values(devices).filter(
-        (device) => device.authorized && device.source === "employee"
+        (device) => device.type === "employee"
       ).length,
     [devices]
   );
   const visitorCount = useMemo(
     () =>
       Object.values(devices).filter(
-        (device) => device.authorized && device.source === "visitor"
+        (device) => device.type === "visitor"
       ).length,
     [devices]
   );

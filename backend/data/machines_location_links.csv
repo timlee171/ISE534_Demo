@@ -1,0 +1,6 @@
+machine_id,mac_address,lat,lng,floor_name,name,company,Google_Maps_Link
+49,28:3a:4d:31:a1:8d,51.460684,-0.932335,Ground Floor,Lithography Systems,SamSung,"=HYPERLINK(""https://www.google.com/maps?q=51.460366,-0.932544"", ""View Location"")"
+45,00:80:92:df:7b:97,51.460355,-0.932523,Ground Floor,Clean Room Equipment,SamSung,"=HYPERLINK(""https://www.google.com/maps?q=51.460355,-0.932523"", ""View Location"")"
+41,9c:b6:d0:bc:4b:c1,51.460499,-0.933075,Ground Floor,Lithography System-1,Nividia,"=HYPERLINK(""https://www.google.com/maps?q=51.460499,-0.933075"", ""View Location"")"
+37,fc:45:96:12:d1:4b,51.460904,-0.932329,Ground Floor,Clean Room Equipment,Apple,"=HYPERLINK(""https://www.google.com/maps?q=51.460904,-0.932329"", ""View Location"")"
+64,00:0b:82:d0:ff:35,51.460366,-0.932544,1st Floor,Lithography System-2,Apple,"=HYPERLINK(""https://www.google.com/maps?q=51.460684,-0.932335"", ""View Location"")"

@@ -81,7 +81,7 @@ export default function MapView({ devices = [] }) {
         );
       }
 
-      if (device.source === "employee") {
+      if (device.type === "employee") {
         return (
           <CircleMarker
             key={`employee-${device.mac_address}`}

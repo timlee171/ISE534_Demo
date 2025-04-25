@@ -57,8 +57,8 @@ def filter_data():
     le = LabelEncoder()
     filter_data["model_encoded"] = le.fit_transform(filter_data["model"])
     filter_data.drop(columns=["model"], inplace=True)
-    shuffled_data = filter_data.sample(frac=1).reset_index(drop=True)
-    shuffled_data.to_json("../data/filtered_sample_rul.json", orient="records", indent=2)
+    # shuffled_data = filter_data.sample(frac=1).reset_index(drop=True)
+    # shuffled_data.to_json("../data/filtered_sample_rul.json", orient="records", indent=2)
           
           
 
@@ -67,5 +67,27 @@ def main():
     filter_data()
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
+
+data = pd.read_csv("../data/sample_rul.csv")
+valid_ids = [49, 45, 41, 37, 64]
+filter_data = data[data["machineID"].isin(valid_ids)].copy()
+
+le = LabelEncoder()
+filter_data["model_encoded"] = le.fit_transform(filter_data["model"])
+filter_data.drop(columns=["model"], inplace=True)
+filter_data.sort_values(by=["machineID", "time_in_cycles"], inplace=True)
+
+# Assign a row index per machine (cycle count index)
+filter_data["row_index"] = filter_data.groupby("machineID").cumcount()
+
+# Reorder: sort by row_index first, then machineID to interleave
+df_interleaved = filter_data.sort_values(by=["row_index", "machineID"]).reset_index(drop=True)
+
+# Optional: drop row_index if no longer needed
+df_interleaved.drop(columns=["row_index"], inplace=True)
+
+print(df_interleaved.head(3))
+
+df_interleaved.to_json("../data/filtered_sample_rul.json", orient="records", indent = 2)

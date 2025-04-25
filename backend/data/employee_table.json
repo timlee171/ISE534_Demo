@@ -1,0 +1,1346 @@
+[
+  {
+    "mac_address":"f0:18:98:20:75:b1",
+    "role":"quality_control",
+    "floor":"Ground Floor",
+    "name":"Alfreda Mendelsohn",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"14:c2:13:93:ea:6b",
+    "role":"mechanic",
+    "floor":"Ground Floor",
+    "name":"Tim",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"48:a9:1c:46:fc:d0",
+    "role":"logistics",
+    "floor":"Ground Floor",
+    "name":"Brenna Barry",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"60:30:d4:3a:03:9a",
+    "role":"line_operator",
+    "floor":"Ground Floor",
+    "name":"Lanae Swisher",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"14:d1:69:b4:8e:e8",
+    "role":"process_engineer",
+    "floor":"Ground Floor",
+    "name":"Loralee Lynsey",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"dc:08:0f:25:d8:78",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Marlee Ches",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"98:ca:33:b5:26:b6",
+    "role":"line_operator",
+    "floor":"Ground Floor",
+    "name":"Korella Trent",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"00:b3:62:2a:87:01",
+    "role":"mechanic",
+    "floor":"Ground Floor",
+    "name":"Aaryan",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"50:de:06:28:65:49",
+    "role":"security",
+    "floor":"Ground Floor",
+    "name":"Desdemona Way",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"88:9e:33:16:0d:2e",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Kirsten Rolph",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"48:bf:6b:38:c5:4d",
+    "role":"security",
+    "floor":"Ground Floor",
+    "name":"Lisetta Kristo",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"20:ee:28:1a:96:86",
+    "role":"security",
+    "floor":"Ground Floor",
+    "name":"Frances O'Callaghan",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"60:30:d4:2f:85:c0",
+    "role":"logistics",
+    "floor":"Ground Floor",
+    "name":"Anna-Maria Margery",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"0c:51:01:9e:8b:c8",
+    "role":"process_engineer",
+    "floor":"Ground Floor",
+    "name":"Orelle Aslam",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"74:40:be:43:d6:4a",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Kissee Emmey",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"78:88:6d:b7:40:dd",
+    "role":"logistics",
+    "floor":"Ground Floor",
+    "name":"Ariana Geddes",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"44:80:eb:82:3d:b3",
+    "role":"mechanic",
+    "floor":"Ground Floor",
+    "name":"Nick",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"54:99:63:92:d0:f8",
+    "role":"mechanic",
+    "floor":"Ground Floor",
+    "name":"Sanjana",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"94:94:26:64:c6:7e",
+    "role":"logistics",
+    "floor":"Ground Floor",
+    "name":"Andi Remington",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"e4:e0:a6:5b:6c:98",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Griselda Jew",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"e4:e0:a6:5b:7b:bf",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Stafani Wolfort",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"60:1d:91:5f:de:47",
+    "role":"quality_control",
+    "floor":"Ground Floor",
+    "name":"Florri Salesin",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"d0:81:7a:a5:f1:22",
+    "role":"it_support",
+    "floor":"Ground Floor",
+    "name":"Zulema Cuthbertson",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"50:7a:c5:02:51:d1",
+    "role":"it_support",
+    "floor":"Ground Floor",
+    "name":"Dona Boykins",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"98:10:e8:3b:1f:00",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Corine Rattan",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"7c:a1:77:96:25:1a",
+    "role":"line_operator",
+    "floor":"Ground Floor",
+    "name":"Nan Evetta",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"88:66:a5:8f:a7:85",
+    "role":"it_support",
+    "floor":"Ground Floor",
+    "name":"Wynne Schuman",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"98:00:c6:44:13:cf",
+    "role":"mechanic",
+    "floor":"Ground Floor",
+    "name":"Deana Tertias",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"30:35:ad:8f:61:f5",
+    "role":"process_engineer",
+    "floor":"Ground Floor",
+    "name":"Salaidh Cappella",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"88:66:a5:45:b9:ea",
+    "role":"logistics",
+    "floor":"Ground Floor",
+    "name":"Bernita Wohlen",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"08:cc:27:37:94:59",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Deina Souza",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"5c:f7:e6:e2:e3:82",
+    "role":"quality_control",
+    "floor":"Ground Floor",
+    "name":"Mercie Angela",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"5c:f9:38:7f:2f:5d",
+    "role":"it_support",
+    "floor":"Ground Floor",
+    "name":"Shalna Beeson",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"04:69:f8:64:be:2d",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Yasmin Baron",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"14:c2:13:d0:e5:b4",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Vanny Wilinski",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"70:3c:69:7d:25:50",
+    "role":"security",
+    "floor":"Ground Floor",
+    "name":"Guenevere Bradney",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"04:69:f8:63:8e:12",
+    "role":"mechanic",
+    "floor":"Ground Floor",
+    "name":"Sashenka Kauffman",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"94:94:26:4d:00:93",
+    "role":"quality_control",
+    "floor":"Ground Floor",
+    "name":"Raphaela Almeta",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"b4:9c:df:79:56:cb",
+    "role":"mechanic",
+    "floor":"Ground Floor",
+    "name":"Maure Edmon",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"c0:b6:58:a2:3c:78",
+    "role":"security",
+    "floor":"Ground Floor",
+    "name":"Clo Mommy",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"f0:18:98:0a:01:a0",
+    "role":"mechanic",
+    "floor":"Ground Floor",
+    "name":"Sib",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"90:b9:31:a5:d2:d6",
+    "role":"security",
+    "floor":"Ground Floor",
+    "name":"Ronda Garibull",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"c8:d0:83:22:73:83",
+    "role":"process_engineer",
+    "floor":"Ground Floor",
+    "name":"Naoma Silvia",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"ec:ad:b8:7a:dc:9b",
+    "role":"mechanic",
+    "floor":"Ground Floor",
+    "name":"Nani Rosinski",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"40:9c:28:43:b3:9a",
+    "role":"process_engineer",
+    "floor":"Ground Floor",
+    "name":"Lusa Jonah",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"0c:51:01:b3:88:be",
+    "role":"process_engineer",
+    "floor":"Ground Floor",
+    "name":"Karie Madalyn",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"6c:96:cf:6d:18:79",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Fayre Stephan",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"f0:18:98:13:4c:bf",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Ortensia Rosenberger",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"4c:74:bf:d7:50:7b",
+    "role":"logistics",
+    "floor":"Ground Floor",
+    "name":"Eveleen Justine",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"04:69:f8:58:99:1f",
+    "role":"process_engineer",
+    "floor":"Ground Floor",
+    "name":"Nikoletta Vullo",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"54:99:63:bf:a6:02",
+    "role":"line_operator",
+    "floor":"Ground Floor",
+    "name":"Scarlet Vallery",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"94:f6:d6:4d:c6:39",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Gwenni Charlton",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"4c:32:75:58:34:46",
+    "role":"quality_control",
+    "floor":"Ground Floor",
+    "name":"Editha Scarlett",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"48:60:5f:18:f4:8e",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Janith Dorcy",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"88:e9:fe:f4:05:6f",
+    "role":"quality_control",
+    "floor":"Ground Floor",
+    "name":"Aurelea Stephana",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"a4:e9:75:77:7e:c3",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Jordanna Norina",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"2c:8a:72:b8:cd:b7",
+    "role":"process_engineer",
+    "floor":"Ground Floor",
+    "name":"Wanda Humfrid",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"f4:63:1f:8e:51:cc",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Sarine Burwell",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"60:30:d4:3c:bd:b1",
+    "role":"logistics",
+    "floor":"Ground Floor",
+    "name":"Gilli Betthel",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"ac:e4:b5:a4:b7:92",
+    "role":"security",
+    "floor":"Ground Floor",
+    "name":"Andrea Ragland",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"80:e6:50:5e:1f:85",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Marcela Fabio",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"b4:9c:df:21:1f:fc",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Carolynn Annabel",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"d8:9c:67:42:64:3f",
+    "role":"security",
+    "floor":"Ground Floor",
+    "name":"Roxy Zitah",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"98:ca:33:d2:90:f2",
+    "role":"line_operator",
+    "floor":"Ground Floor",
+    "name":"Danyette Darb",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"b8:b2:f8:80:a8:9b",
+    "role":"security",
+    "floor":"Ground Floor",
+    "name":"Martguerita Mobley",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"0c:51:01:b6:b3:dc",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Jillene Imojean",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"28:cf:e9:2d:5d:b5",
+    "role":"line_operator",
+    "floor":"Ground Floor",
+    "name":"Carissa Derte",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"20:ee:28:e1:8a:a7",
+    "role":"mechanic",
+    "floor":"Ground Floor",
+    "name":"Charles",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"0c:51:01:b2:dc:ea",
+    "role":"security",
+    "floor":"Ground Floor",
+    "name":"Imogene Attwood",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"50:a6:7f:7f:e8:88",
+    "role":"line_operator",
+    "floor":"Ground Floor",
+    "name":"Carmencita Chester",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"c4:61:8b:dc:4a:94",
+    "role":"security",
+    "floor":"Ground Floor",
+    "name":"Stephenie Kimber",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"24:1b:7a:9d:05:c7",
+    "role":"quality_control",
+    "floor":"Ground Floor",
+    "name":"Dannye Stortz",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"38:f9:d3:1e:30:df",
+    "role":"line_operator",
+    "floor":"Ground Floor",
+    "name":"Karin Esmaria",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"60:1d:91:93:f1:03",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Linnie Wylen",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"98:10:e8:3a:c9:e4",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Lurleen Larimor",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"70:70:0d:dc:5f:15",
+    "role":"it_support",
+    "floor":"Ground Floor",
+    "name":"Reeta Elburr",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"88:ae:07:18:fd:fc",
+    "role":"quality_control",
+    "floor":"Ground Floor",
+    "name":"Gratia Vidovic",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"38:80:df:d3:9e:69",
+    "role":"quality_control",
+    "floor":"Ground Floor",
+    "name":"Adda Fleta",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"18:81:0e:4b:6c:9d",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Orsola Adachi",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"b4:9c:df:17:21:fa",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Anita Fawna",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"b4:9c:df:25:4f:65",
+    "role":"line_operator",
+    "floor":"Ground Floor",
+    "name":"Neille Tomchay",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"ec:ad:b8:69:da:eb",
+    "role":"process_engineer",
+    "floor":"Ground Floor",
+    "name":"Valry Wurst",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"34:a3:95:27:72:e8",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Grace Polak",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"88:6b:6e:24:21:2f",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Catharine Pablo",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"14:87:6a:b1:7d:16",
+    "role":"logistics",
+    "floor":"Ground Floor",
+    "name":"Joleen Merth",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"a0:4e:a7:b9:bf:7d",
+    "role":"it_support",
+    "floor":"Ground Floor",
+    "name":"Marnie Drexler",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"d8:9b:3b:f9:63:dd",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Linet Ransom",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"f0:d7:aa:22:0d:d2",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Dennie Samp",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"70:11:24:41:bd:31",
+    "role":"mechanic",
+    "floor":"Ground Floor",
+    "name":"Jillayne Braynard",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"88:66:a5:56:62:9f",
+    "role":"logistics",
+    "floor":"Ground Floor",
+    "name":"Tawsha Athiste",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"9c:f4:8e:d4:b9:af",
+    "role":"logistics",
+    "floor":"Ground Floor",
+    "name":"Toni Zavras",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"8c:fe:57:80:c3:d3",
+    "role":"process_engineer",
+    "floor":"Ground Floor",
+    "name":"Hedwig Denby",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"ec:ad:b8:8d:92:cf",
+    "role":"line_operator",
+    "floor":"Ground Floor",
+    "name":"Elisabeth Hachmin",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"38:80:df:8a:30:7b",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Brittani Henrik",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"c0:a6:00:62:64:31",
+    "role":"logistics",
+    "floor":"Ground Floor",
+    "name":"Kalie Zashin",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"d0:d2:b0:26:e9:30",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Lynn Trescott",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"40:40:a7:99:6d:5c",
+    "role":"line_operator",
+    "floor":"Ground Floor",
+    "name":"Charis Silma",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"50:7a:c5:55:a3:ae",
+    "role":"security",
+    "floor":"Ground Floor",
+    "name":"Lisbeth Allard",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"0c:51:01:b4:53:0f",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Ninetta Pardew",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"2c:f0:ee:62:e9:ec",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Hannah Higginbotham",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"a8:86:dd:ab:20:9f",
+    "role":"it_support",
+    "floor":"Ground Floor",
+    "name":"Lucia Simeon",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"8c:fe:57:7c:b1:ce",
+    "role":"security",
+    "floor":"Ground Floor",
+    "name":"Jemima Arathorn",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"34:a8:eb:ab:53:24",
+    "role":"quality_control",
+    "floor":"Ground Floor",
+    "name":"Shirline Ahmar",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"40:9c:28:d3:02:f3",
+    "role":"line_operator",
+    "floor":"Ground Floor",
+    "name":"Delcine Viveca",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"d0:77:14:ad:76:7d",
+    "role":"security",
+    "floor":"Ground Floor",
+    "name":"Vina Dettmer",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"78:67:d7:21:a1:64",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Juliet Pfeifer",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"ac:bc:32:9b:ae:c3",
+    "role":"security",
+    "floor":"Ground Floor",
+    "name":"Peg Jemmy",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"80:82:23:7a:45:5c",
+    "role":"quality_control",
+    "floor":"Ground Floor",
+    "name":"Clemmie Maffa",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"ec:ad:b8:7d:23:e8",
+    "role":"it_support",
+    "floor":"Ground Floor",
+    "name":"Misti Starkey",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"1c:5c:f2:e8:8b:33",
+    "role":"it_support",
+    "floor":"Ground Floor",
+    "name":"Thia Lorimer",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"88:e9:fe:f3:38:73",
+    "role":"quality_control",
+    "floor":"Ground Floor",
+    "name":"Lizabeth Marigold",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"3c:2e:ff:6d:ad:3f",
+    "role":"quality_control",
+    "floor":"Ground Floor",
+    "name":"Miguelita Yesima",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"88:66:a5:96:8b:d2",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Tiphany Marlowe",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"b4:9c:df:b6:af:22",
+    "role":"it_support",
+    "floor":"Ground Floor",
+    "name":"Shellie Bohaty",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"20:54:fa:a4:a6:59",
+    "role":"it_support",
+    "floor":"Ground Floor",
+    "name":"Luisa Reid",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"ac:1f:74:22:eb:d8",
+    "role":"process_engineer",
+    "floor":"Ground Floor",
+    "name":"Katusha Kate",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"04:69:f8:44:02:94",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Estella Suchta",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"88:ae:07:1e:96:26",
+    "role":"quality_control",
+    "floor":"Ground Floor",
+    "name":"Leena Lamoree",
+    "company":"Nvidia",
+    "type":"visitor"
+  },
+  {
+    "mac_address":"18:81:0e:4c:75:f6",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Rosalinde Vizzone",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"60:30:d4:45:4b:93",
+    "role":"quality_control",
+    "floor":"Ground Floor",
+    "name":"Kacy Hugibert",
+    "company":"Samsung",
+    "type":"visitor"
+  },
+  {
+    "mac_address":"84:fd:d1:e8:5b:25",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Loreen Zacharias",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"c0:b6:58:a1:d0:4f",
+    "role":"it_support",
+    "floor":"Ground Floor",
+    "name":"Evangeline Leisha",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"c0:b6:58:ef:34:2e",
+    "role":"quality_control",
+    "floor":"Ground Floor",
+    "name":"Sisile Flint",
+    "company":"Samsung",
+    "type":"visitor"
+  },
+  {
+    "mac_address":"14:c2:13:e2:12:a3",
+    "role":"logistics",
+    "floor":"Ground Floor",
+    "name":"Therine Boeschen",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"64:76:ba:92:91:ea",
+    "role":"process_engineer",
+    "floor":"Ground Floor",
+    "name":"Cynde Karr",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"88:66:a5:50:ec:15",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Barbra Baptiste",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"94:94:26:5b:54:77",
+    "role":"logistics",
+    "floor":"Ground Floor",
+    "name":"Tracey Ingvar",
+    "company":"Nvidia",
+    "type":"visitor"
+  },
+  {
+    "mac_address":"f0:18:98:94:1a:6b",
+    "role":"process_engineer",
+    "floor":"Ground Floor",
+    "name":"Tarah Aluino",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"38:53:9c:c4:3c:d3",
+    "role":"it_support",
+    "floor":"Ground Floor",
+    "name":"Tamar Keever",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"80:82:23:78:bb:4e",
+    "role":"process_engineer",
+    "floor":"Ground Floor",
+    "name":"Jennine Platus",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"b8:63:4d:b9:77:c2",
+    "role":"process_engineer",
+    "floor":"Ground Floor",
+    "name":"Liana Antebi",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"0c:51:01:b6:44:af",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Amata Sheryle",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"44:c3:46:79:34:5c",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Valina Ellissa",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"98:10:e8:52:e2:e7",
+    "role":"process_engineer",
+    "floor":"Ground Floor",
+    "name":"Leland Wistrup",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"40:83:1d:75:d3:c2",
+    "role":"line_operator",
+    "floor":"Ground Floor",
+    "name":"Evangelia Lovich",
+    "company":"Nvidia",
+    "type":"visitor"
+  },
+  {
+    "mac_address":"98:00:c6:42:07:73",
+    "role":"it_support",
+    "floor":"Ground Floor",
+    "name":"Cherry Lundin",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"64:9a:be:4b:c0:72",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Karee Beverie",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"94:94:26:60:7d:7f",
+    "role":"logistics",
+    "floor":"Ground Floor",
+    "name":"Lind Steve",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"64:a5:c3:4e:ca:81",
+    "role":"it_support",
+    "floor":"Ground Floor",
+    "name":"Jena Traver",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"0c:51:01:b3:f7:da",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Birgitta Eustacia",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"84:ad:8d:66:24:2b",
+    "role":"logistics",
+    "floor":"Ground Floor",
+    "name":"Stephannie Garey",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"cc:25:ef:86:61:bf",
+    "role":"quality_control",
+    "floor":"Ground Floor",
+    "name":"Korney Auston",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"0c:51:01:ba:29:35",
+    "role":"line_operator",
+    "floor":"Ground Floor",
+    "name":"Jinny Atalaya",
+    "company":"Samsung",
+    "type":"visitor"
+  },
+  {
+    "mac_address":"88:66:a5:48:a0:08",
+    "role":"logistics",
+    "floor":"Ground Floor",
+    "name":"Annetta Fong",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"54:99:63:77:cc:f4",
+    "role":"quality_control",
+    "floor":"Ground Floor",
+    "name":"Gay Haskell",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"f0:cb:a1:69:8f:f5",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Lurlene Torrence",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"04:69:f8:64:be:27",
+    "role":"security",
+    "floor":"Ground Floor",
+    "name":"Adele Mecke",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"dc:a9:04:82:5d:36",
+    "role":"quality_control",
+    "floor":"Ground Floor",
+    "name":"Marcille Normalie",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"0c:51:01:b3:f5:f6",
+    "role":"process_engineer",
+    "floor":"Ground Floor",
+    "name":"Rayna Creight",
+    "company":"Samsung",
+    "type":"visitor"
+  },
+  {
+    "mac_address":"6c:96:cf:9d:9f:a8",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Zelma Christos",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"c0:e8:62:97:05:d3",
+    "role":"process_engineer",
+    "floor":"Ground Floor",
+    "name":"Ardene Lorrimer",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"04:69:f8:32:ed:33",
+    "role":"line_operator",
+    "floor":"Ground Floor",
+    "name":"Auria Tammie",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"0c:51:01:b4:e2:1e",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Ulla Bannister",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"f0:0f:ec:73:9f:32",
+    "role":"it_support",
+    "floor":"Ground Floor",
+    "name":"Christean Cayla",
+    "company":"Nvidia",
+    "type":"visitor"
+  },
+  {
+    "mac_address":"b4:9c:df:87:0e:1d",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Ludovika Tobiah",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"0c:51:01:b5:db:94",
+    "role":"logistics",
+    "floor":"Ground Floor",
+    "name":"Carmelia Lowery",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"60:30:d4:3a:48:e7",
+    "role":"it_support",
+    "floor":"Ground Floor",
+    "name":"Natalee Malet",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"f4:f5:24:84:38:8f",
+    "role":"it_support",
+    "floor":"Ground Floor",
+    "name":"Myrle McCandless",
+    "company":"Samsung",
+    "type":"visitor"
+  },
+  {
+    "mac_address":"94:94:26:63:42:67",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"April Amerigo",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"c0:e8:62:e6:cc:e4",
+    "role":"fab_operator",
+    "floor":"Ground Floor",
+    "name":"Corrianne Combs",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"2c:78:0e:87:14:64",
+    "role":"line_operator",
+    "floor":"Ground Floor",
+    "name":"Fidela Daveen",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"38:f9:d3:1c:04:84",
+    "role":"process_engineer",
+    "floor":"Ground Floor",
+    "name":"Georgie Jegar",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"cc:9f:7a:46:21:81",
+    "role":"it_support",
+    "floor":"Ground Floor",
+    "name":"Meaghan Amberly",
+    "company":"Apple",
+    "type":"employee"
+  },
+  {
+    "mac_address":"6c:96:cf:72:df:a9",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Julissa Viole",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"84:89:ad:89:52:4b",
+    "role":"process_engineer",
+    "floor":"Ground Floor",
+    "name":"Daniela Trevar",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"60:1d:91:c7:46:09",
+    "role":"quality_control",
+    "floor":"Ground Floor",
+    "name":"Elinore Russia",
+    "company":"Nvidia",
+    "type":"employee"
+  },
+  {
+    "mac_address":"f0:d7:aa:b7:6b:54",
+    "role":"cleanroom_staff",
+    "floor":"Ground Floor",
+    "name":"Rosemary Ottilie",
+    "company":"Samsung",
+    "type":"employee"
+  },
+  {
+    "mac_address":"80:58:f8:e0:c9:8e",
+    "role":"line_operator",
+    "floor":"Ground Floor",
+    "name":"Anatola Nalor",
+    "company":"Apple",
+    "type":"employee"
+  }
+]

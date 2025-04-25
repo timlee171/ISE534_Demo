@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -6,16 +6,19 @@ import {
   Typography,
   Tabs,
   TabsHeader,
-  Tab
+  Tab,
+  Button,
 } from "@material-tailwind/react";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { StreamContext } from "@/context/StreamContext";
 
 export function Employees() {
   const { rtlsData } = useContext(StreamContext);
   const [devices, setDevices] = useState([]);
   const [activeTab, setActiveTab] = useState("All");
+  const [page, setPage] = useState(1);
+  const rowsPerPage = 10;
 
-  // Fetch DEVICE_INFO
   useEffect(() => {
     fetch("http://localhost:5000/devices")
       .then((response) => response.json())
@@ -23,18 +26,31 @@ export function Employees() {
       .catch((error) => console.error("Error fetching devices:", error));
   }, []);
 
- // Filter employees (exclude machines) and by company
- const employees = devices.filter((device) => device.role === "mechanic" || device.role === "staff");
- const filteredEmployees = activeTab === "All"
-   ? employees
-   : employees.filter((employee) => employee.company === activeTab);
+  const tabs = [
+    { label: "All", value: "All" },
+    { label: "Apple", value: "Apple" },
+    { label: "Nvidia", value: "Nvidia" },
+    { label: "Samsung", value: "Samsung" },
+  ];
 
- const tabs = [
-   { label: "All", value: "All" },
-   { label: "Apple", value: "Apple" },
-   { label: "Nvidia", value: "Nvidia" },
-   { label: "Samsung", value: "Samsung" }
- ];
+  const employees = useMemo(
+    () => devices.filter((d) => d.type === "employee"),
+    [devices]
+  );
+
+  const filteredEmployees = useMemo(() => {
+    setPage(1); // reset page when tab changes
+    return activeTab === "All"
+      ? employees
+      : employees.filter((e) => e.company === activeTab);
+  }, [employees, activeTab]);
+
+  const paginatedEmployees = useMemo(() => {
+    const start = (page - 1) * rowsPerPage;
+    return filteredEmployees.slice(start, start + rowsPerPage);
+  }, [filteredEmployees, page]);
+
+  const totalPages = Math.ceil(filteredEmployees.length / rowsPerPage);
 
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
@@ -79,34 +95,36 @@ export function Employees() {
                 </tr>
               </thead>
               <tbody>
-                {filteredEmployees.map((employee, index) => {
+                {paginatedEmployees.map((employee, index) => {
                   const className = `py-3 px-5 ${
-                    index === filteredEmployees.length - 1 ? "" : "border-b border-blue-gray-50"
+                    index === paginatedEmployees.length - 1
+                      ? ""
+                      : "border-b border-blue-gray-50"
                   }`;
 
                   return (
-                    <tr key={employee.mac_address}>
-                        <td className={className}>
+                    <tr key={`${employee.mac_address}-${index}`}>
+                      <td className={className}>
                         <Typography className="text-xs font-semibold text-blue-gray-600">
                           {employee.name || "Unknown"}
                         </Typography>
-                        </td>
-                        <td className={className}>
+                      </td>
+                      <td className={className}>
                         <Typography className="text-xs font-semibold text-blue-gray-600">
                           {employee.company || "Unknown"}
                         </Typography>
-                        </td>
-                        <td className={className}>
+                      </td>
+                      <td className={className}>
                         <Typography className="text-xs font-semibold text-blue-gray-600">
                           {employee.floor || "Unknown"}
                         </Typography>
-                        </td>
-                        <td className={className}>
+                      </td>
+                      <td className={className}>
                         <Typography className="text-xs font-semibold text-blue-gray-600">
                           {employee.role || "Unknown"}
                         </Typography>
-                        </td>
-                        <td className={className}>
+                      </td>
+                      <td className={className}>
                         <Typography
                           variant="small"
                           color="blue-gray"
@@ -118,7 +136,7 @@ export function Employees() {
                     </tr>
                   );
                 })}
-                {filteredEmployees.length === 0 && (
+                {paginatedEmployees.length === 0 && (
                   <tr>
                     <td colSpan={5} className="py-3 px-5 text-center">
                       <Typography className="text-xs font-semibold text-blue-gray-600">
@@ -130,6 +148,29 @@ export function Employees() {
               </tbody>
             </table>
           </div>
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center gap-4 py-4">
+              <Button
+                variant="outlined"
+                size="sm"
+                onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                disabled={page === 1}
+              >
+                <ChevronLeftIcon className="h-4 w-4" />
+              </Button>
+              <Typography className="text-sm font-medium">
+                Page {page} of {totalPages}
+              </Typography>
+              <Button
+                variant="outlined"
+                size="sm"
+                onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+                disabled={page === totalPages}
+              >
+                <ChevronRightIcon className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
         </CardBody>
       </Card>
     </div>

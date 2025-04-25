@@ -8,13 +8,11 @@ export const StreamProvider = ({ children }) => {
   const [machineStatuses, setMachineStatuses] = useState({});
   const [rtlsData, setRtlsData] = useState({});
   const [notificationHistory, setNotificationHistory] = useState([]);
-  const [unauthorizedDevices, setUnauthorizedDevices] = useState([]);
   const [zoneViolations, setZoneViolations] = useState([]);
   const machineSourceRef = useRef(null);
   const rtlsSourceRef = useRef(null);
 
   console.log("StreamProvider initialized:", {
-    unauthorizedDevices,
     zoneViolations,
     rtlsData,
     machines,
@@ -213,10 +211,8 @@ export const StreamProvider = ({ children }) => {
       machineStatuses,
       rtlsData,
       notificationHistory,
-      unauthorizedDevices,
       zoneViolations,
-      setNotificationHistory,
-      setUnauthorizedDevices,
+      setNotificationHistory
     }),
     [
       machines,
@@ -224,10 +220,8 @@ export const StreamProvider = ({ children }) => {
       machineStatuses,
       rtlsData,
       notificationHistory,
-      unauthorizedDevices,
       zoneViolations,
       setNotificationHistory,
-      setUnauthorizedDevices,
     ]
   );
 
